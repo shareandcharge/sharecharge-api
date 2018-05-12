@@ -1,0 +1,6 @@
+{
+    "stage": "local",
+    "ethProvider": "http://localhost:8545",
+    "gasPrice": 2,
+    "tokenAddress": "0x70e04a4af38f26e9deec7e11b721675a11eb138d"
+}
