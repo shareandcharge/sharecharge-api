@@ -4,7 +4,6 @@
   "description": "HTTP webserver for the Share&Charge e-Mobility Network",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --exit -r ts-node/register test/**/*.spec.ts"
   },
   "author": "MotionWerk GmbH",
   "license": "ISC",
