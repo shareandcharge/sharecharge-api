@@ -1,10 +1,9 @@
 {
   "name": "@motionwerk/sharecharge-api",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "HTTP webserver for the Share&Charge e-Mobility Network",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "MotionWerk GmbH",
   "license": "ISC",
   "dependencies": {
