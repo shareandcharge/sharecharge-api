@@ -1,5 +1,5 @@
 {
-  "name": "sharecharge-api",
+  "name": "@motionwerk/sharecharge-api",
   "version": "0.0.1",
   "description": "HTTP webserver for the Share&Charge e-Mobility Network",
   "main": "index.js",
