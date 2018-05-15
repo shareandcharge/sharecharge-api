@@ -12,7 +12,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
             symbol: await sc.token.getSymbol(),
             address: sc.token.address,
             owner: await sc.token.getOwner()
-        }
+        };
         res.send(response);
     });
 

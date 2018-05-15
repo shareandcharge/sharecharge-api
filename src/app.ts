@@ -1,10 +1,10 @@
 import { ShareCharge, Wallet } from '@motionwerk/sharecharge-lib';
-import * as config from 'config';
+import { config } from './config';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import "reflect-metadata";
 import LoggingProvider from "./services/loggingProvider";
-import charging from  './routes/charging';
+import charging from './routes/charging';
 import cdr from './routes/cdr';
 import store from './routes/store';
 import token from './routes/token';
@@ -14,10 +14,10 @@ const logger = new LoggingProvider().obtain();
 const app = express();
 
 const sc = ShareCharge.getInstance({
-    stage: config.get("stage"),
-    ethProvider: config.get("ethProvider"),
-    gasPrice: parseInt(config.get("gasPrice")),
-    tokenAddress: config.get("tokenAddress")
+    stage: config.stage,
+    ethProvider: config.ethProvider,
+    gasPrice: parseInt(config.gasPrice),
+    tokenAddress: config.tokenAddress
 });
 sc.startListening();
 

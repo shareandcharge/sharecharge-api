@@ -11,9 +11,9 @@
   "author": "MotionWerk GmbH",
   "license": "ISC",
   "dependencies": {
+    "@motionwerk/sharecharge-config": "^1.0.6",
     "@motionwerk/sharecharge-lib": "0.0.21",
     "bcrypt": "^2.0.1",
-    "config": "^1.30.0",
     "inversify": "^4.13.0",
     "joi": "^13.3.0",
     "jsonwebtoken": "^8.2.1",
