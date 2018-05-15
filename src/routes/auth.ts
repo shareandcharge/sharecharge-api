@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import * as config from 'config';
+import { config } from '../config';
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
@@ -15,7 +15,8 @@ const users = [
 ];
 
 router.post('/', async (req, res) => {
-    const { error } = validate(req.body);
+
+    const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     const user = users.find(x => x.email === req.body.email);
@@ -24,7 +25,7 @@ router.post('/', async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).send('Invalid email or password!');
 
-    const token = jwt.sign({ email: user.email, isAdmin: user.isAdmin }, config.get("jwtPrivateKey"));
+    const token = jwt.sign({email: user.email, isAdmin: user.isAdmin}, config.jwtPrivateKey);
 
     res.send(token);
 });
