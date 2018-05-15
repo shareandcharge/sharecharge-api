@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Joi = require("joi");
-const config = require("config");
+const config_1 = require("../config");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword)
         return res.status(400).send('Invalid email or password!');
-    const token = jwt.sign({ email: user.email, isAdmin: user.isAdmin }, config.get("jwtPrivateKey"));
+    const token = jwt.sign({ email: user.email, isAdmin: user.isAdmin }, config_1.config.jwtPrivateKey);
     res.send(token);
 });
 function validate(req) {

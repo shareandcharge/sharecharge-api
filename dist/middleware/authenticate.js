@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const jwt = require("jsonwebtoken");
-const config = require("config");
+const config_1 = require("../config");
 function default_1(req, res, next) {
     const header = req.header('Authorization');
     if (!header)
@@ -9,7 +9,7 @@ function default_1(req, res, next) {
     const parts = header.split(' ');
     const token = (parts.length > 1) ? parts[1] : '';
     try {
-        const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
+        const decoded = jwt.verify(token, config_1.config.jwtPrivateKey);
         req.user = decoded;
         next();
     }
