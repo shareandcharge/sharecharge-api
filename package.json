@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "description": "HTTP webserver for the Share&Charge e-Mobility Network",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "install": "npm run build",
+    "build": "tsc && echo '#!/usr/bin/env node'| cat - ./dist/app.js > ./dist/app.node.js"
+  },
+  "bin": "./dist/app.node.js",
   "author": "MotionWerk GmbH",
   "license": "ISC",
   "dependencies": {
