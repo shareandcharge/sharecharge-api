@@ -2,7 +2,7 @@
   "name": "@motionwerk/sharecharge-api",
   "version": "0.1.1",
   "description": "HTTP webserver for the Share&Charge e-Mobility Network",
-  "main": "index.js",
+  "main": "dist/app.js",
   "scripts": {
     "install": "npm run build",
     "build": "tsc && echo '#!/usr/bin/env node'| cat - ./dist/app.js > ./dist/app.node.js"
