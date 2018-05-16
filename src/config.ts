@@ -1,4 +1,4 @@
-import { IConfig, getConfigDir, prepareConfigLocation } from "@motionwerk/sharecharge-config";
+import { IConfig, getConfigDir, prepareConfigLocation } from "@motionwerk/sharecharge-common";
 import * as fs from "fs";
 import * as path from "path";
 
