@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@motionwerk/sharecharge-common": "^1.0.7",
-    "@motionwerk/sharecharge-lib": "^0.1.5",
+    "@motionwerk/sharecharge-lib": "^0.1.10",
     "bcrypt": "^2.0.1",
     "inversify": "^4.13.0",
     "joi": "^13.3.0",
