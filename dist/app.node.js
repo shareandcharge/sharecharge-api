@@ -2,7 +2,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sharecharge_lib_1 = require("@motionwerk/sharecharge-lib");
-const config = require("config");
+const config_1 = require("./config");
 const express = require("express");
 const bodyParser = require("body-parser");
 require("reflect-metadata");
@@ -15,10 +15,10 @@ const auth_1 = require("./routes/auth");
 const logger = new loggingProvider_1.default().obtain();
 const app = express();
 const sc = sharecharge_lib_1.ShareCharge.getInstance({
-    stage: config.get("stage"),
-    ethProvider: config.get("ethProvider"),
-    gasPrice: parseInt(config.get("gasPrice")),
-    tokenAddress: config.get("tokenAddress")
+    stage: config_1.config.stage,
+    ethProvider: config_1.config.ethProvider,
+    gasPrice: parseInt(config_1.config.gasPrice),
+    tokenAddress: config_1.config.tokenAddress
 });
 sc.startListening();
 sc.on('Error', result => {
