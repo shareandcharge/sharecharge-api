@@ -6,7 +6,7 @@ const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
-    router.get('/cdr/info', authenticate, async (req, res) => {
+    router.get('/cdr/info', async (req, res) => {
         const logs = await sc.charging.contract.getLogs('ChargeDetailRecord');
         const response = logs.map(obj => (
             {
