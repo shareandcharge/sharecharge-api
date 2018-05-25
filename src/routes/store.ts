@@ -5,30 +5,31 @@ import authenticate from '../middleware/authenticate';
 const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
-
+    
     // get locations by CPO id
-    router.get('/test', async (req, res) => {
-        console.log("hello core client");
-        res.send("ok test");
-    });
-
     router.get('/locations/:cpo', async (req, res) => {
         const locations = await sc.store.getLocationsByCPO(req.params.cpo);
         res.send(locations);
     });
-
+    
     // get location by id
     router.get('/locations/:cpo/:id', async (req, res) => {
         const location = await sc.store.getLocationById(req.params.cpo, req.params.id);
         res.send(location);
     });
-
+    
     // get tariffs by CPO id
     router.get('/tariffs/:cpo', async (req, res) => {
         const tariffs = await sc.store.getTariffsByCPO(req.params.cpo);
         res.send(tariffs);
     });
-
+    
+    // get owner of the location
+    router.get('/owner/:scId', async (req, res) => {
+        const owner = await sc.store.getOwnerOfLocation(req.params.scId);
+        res.send(owner);
+    });
+    
     // add location
     router.post('/locations', async (req, res) => {
         try {
@@ -38,7 +39,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
             res.status(500).send(err.message);
         }
     });
-
+    
     // update location
     router.put('/locations', async (req, res) => {
         try {
@@ -67,12 +68,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
             res.status(500).send(err.message);
         }
     });
-
-    // get owner of the location
-    router.get('/owner/:scId', async (req, res) => {
-        const owner = await sc.store.getOwnerOfLocation(req.params.scId);
-        res.send(owner);
-    });
+    
 
     return router;
 };

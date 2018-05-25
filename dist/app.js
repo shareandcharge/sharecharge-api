@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true })); //support encoded bodies
 app.use('/health', (req, res) => res.send('OK'));
 app.use('/api/store', store_1.default(sc, wallet));
 app.use('/api/token', token_1.default(sc, wallet));
-app.use('/api/charge', charging_1.default(sc, wallet));
+app.use('/api/charging', charging_1.default(sc, wallet));
 app.use('/api/cdr', cdr_1.default(sc, wallet));
 app.use('/api/auth', auth_1.default);
 const port = process.env.PORT || 3000;

@@ -34,7 +34,7 @@ app.use('/health', (req, res) => res.send('OK'));
 
 app.use('/api/store', store(sc, wallet));
 app.use('/api/token', token(sc, wallet));
-app.use('/api/charge', charging(sc, wallet));
+app.use('/api/charging', charging(sc, wallet));
 app.use('/api/cdr', cdr(sc, wallet));
 app.use('/api/auth', auth);
 

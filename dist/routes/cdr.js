@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
-const authenticate_1 = require("../middleware/authenticate");
 const router = express.Router();
 exports.default = (sc, wallet) => {
-    router.get('/cdr/info', authenticate_1.default, async (req, res) => {
+    router.get('/cdr/info', async (req, res) => {
         const logs = await sc.charging.contract.getLogs('ChargeDetailRecord');
         const response = logs.map(obj => ({
             date: new Date(obj.timestamp * 1000).toUTCString(),
