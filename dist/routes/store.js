@@ -18,6 +18,11 @@ exports.default = (sc, wallet) => {
         const tariffs = await sc.store.getTariffsByCPO(req.params.cpo);
         res.send(tariffs);
     });
+    // get owner of the location
+    router.get('/owner/:scId', async (req, res) => {
+        const owner = await sc.store.getOwnerOfLocation(req.params.scId);
+        res.send(owner);
+    });
     // add location
     router.post('/locations', async (req, res) => {
         try {
@@ -56,11 +61,6 @@ exports.default = (sc, wallet) => {
         catch (err) {
             res.status(500).send(err.message);
         }
-    });
-    // get owner of the location
-    router.get('/owner/:scId', async (req, res) => {
-        const owner = await sc.store.getOwnerOfLocation(req.params.scId);
-        res.send(owner);
     });
     return router;
 };
