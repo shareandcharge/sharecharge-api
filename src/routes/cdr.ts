@@ -7,7 +7,7 @@ const router = express.Router();
 export default (sc: ShareCharge, wallet: Wallet) => {
 
     router.get('/info', async (req, res) => {
-        const logs = await sc.charging.contract.getLogs('ChargeDetailRecord');
+        const logs = await sc.charging.contract.getLogs('ChargeDetailRecord', req.query);
         const response = logs.map(obj => (
             {
                 date: new Date(obj.timestamp * 1000).toUTCString(),
