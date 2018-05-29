@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const router = express.Router();
 exports.default = (sc, wallet) => {
-    router.get('/cdr/info', async (req, res) => {
-        const logs = await sc.charging.contract.getLogs('ChargeDetailRecord');
+    router.get('/info', async (req, res) => {
+        const logs = await sc.charging.contract.getLogs('ChargeDetailRecord', req.query);
         const response = logs.map(obj => ({
             date: new Date(obj.timestamp * 1000).toUTCString(),
             evseId: obj.returnValues.evseId,
