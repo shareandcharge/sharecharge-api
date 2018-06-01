@@ -13,12 +13,7 @@ import auth from './routes/auth';
 const logger = new LoggingProvider().obtain();
 const app = express();
 
-const sc = ShareCharge.getInstance({
-    stage: config.stage,
-    ethProvider: config.ethProvider,
-    gasPrice: parseInt(config.gasPrice),
-    tokenAddress: config.tokenAddress
-});
+const sc = ShareCharge.getInstance(config);
 sc.startListening();
 
 sc.on('Error', result => {

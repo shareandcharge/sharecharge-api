@@ -13,12 +13,7 @@ const token_1 = require("./routes/token");
 const auth_1 = require("./routes/auth");
 const logger = new loggingProvider_1.default().obtain();
 const app = express();
-const sc = sharecharge_lib_1.ShareCharge.getInstance({
-    stage: config_1.config.stage,
-    ethProvider: config_1.config.ethProvider,
-    gasPrice: parseInt(config_1.config.gasPrice),
-    tokenAddress: config_1.config.tokenAddress
-});
+const sc = sharecharge_lib_1.ShareCharge.getInstance(config_1.config);
 sc.startListening();
 sc.on('Error', result => {
     logger.error("Error", result);

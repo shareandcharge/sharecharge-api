@@ -1,6 +1,6 @@
 {
   "name": "@motionwerk/sharecharge-api",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "HTTP webserver for the Share&Charge e-Mobility Network",
   "main": "dist/app.js",
   "scripts": {
@@ -12,12 +12,12 @@
   "author": "MotionWerk GmbH",
   "license": "ISC",
   "dependencies": {
-    "@motionwerk/sharecharge-common": "^1.0.10",
-    "@motionwerk/sharecharge-lib": "^0.1.16",
+    "@motionwerk/sharecharge-common": "^1.2.3",
+    "@motionwerk/sharecharge-lib": "^0.1.22",
     "bcrypt": "^2.0.1",
     "inversify": "^4.13.0",
     "joi": "^13.3.0",
-    "jsonwebtoken": "^8.2.1",
+    "jsonwebtoken": "^8.2.2",
     "reflect-metadata": "^0.1.12",
     "winston": "^2.4.2"
   }
