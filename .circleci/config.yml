@@ -48,7 +48,7 @@ jobs:
             - node_modules
 
       - persist_to_workspace:
-          root: ~/client
+          root: ~/api
           paths: .
 
   test:
@@ -61,7 +61,7 @@ jobs:
     steps:
 
       - attach_workspace:
-          at: ~/client
+          at: ~/api
 
       - run:
           name: Run tests
@@ -77,14 +77,14 @@ jobs:
     steps:
 
       - attach_workspace:
-          at: ~/client
+          at: ~/api
 
       - run:
           name: tsc
           command: ./node_modules/.bin/tsc
 
       - persist_to_workspace:
-          root: ~/client
+          root: ~/api
           paths: .
 
 workflows:
