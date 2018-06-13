@@ -86,6 +86,22 @@ jobs:
       - persist_to_workspace:
           root: ~/api
           paths: .
+        
+  deploy:
+
+    <<: *stage_defaults
+
+    docker:
+      - <<: *docker_defaults
+
+    steps:
+
+      - attach_workspace:
+          at: ~/api
+
+      - run:
+          name: npm publish
+          command: npm publish
 
 workflows:
   version: 2
@@ -98,3 +114,7 @@ workflows:
       - transpile:
           requires:
             - build
+      - deploy:
+          requires:
+            - test
+            - transpile
