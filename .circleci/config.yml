@@ -27,7 +27,7 @@ jobs:
 
       - run:
           name: npm secret
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 
       # Download and cache dependencies
       - restore_cache:
