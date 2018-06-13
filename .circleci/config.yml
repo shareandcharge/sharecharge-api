@@ -11,6 +11,11 @@ defaults:
   - &docker_defaults
     image: circleci/node
 
+  - &npm_auth
+    run:
+      name: npm secret
+      command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+
   
 jobs:
 
@@ -25,9 +30,7 @@ jobs:
 
       - checkout
 
-      - run:
-          name: npm secret
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - <<: *npm_auth
 
       # Download and cache dependencies
       - restore_cache:
@@ -99,9 +102,7 @@ jobs:
       - attach_workspace:
           at: ~/api
 
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/api/.npmrc
+      - <<: *npm_auth
 
       - run:
           name: npm publish
