@@ -6,14 +6,15 @@
   "scripts": {
     "start": "ts-node src/app.ts",
     "install": "npm run build",
-    "build": "tsc && echo '#!/usr/bin/env node'| cat - ./dist/app.js > ./dist/app.node.js"
+    "build": "tsc && echo '#!/usr/bin/env node'| cat - ./dist/app.js > ./dist/app.node.js",
+    "test": "echo 'no tests!'"
   },
   "bin": "./dist/app.node.js",
   "author": "MotionWerk GmbH",
   "license": "ISC",
   "dependencies": {
     "@motionwerk/sharecharge-common": "^1.4.0",
-    "@motionwerk/sharecharge-lib": "0.4.4",
+    "@motionwerk/sharecharge-lib": "0.4.17",
     "bcrypt": "^2.0.1",
     "inversify": "^4.13.0",
     "joi": "^13.3.0",
