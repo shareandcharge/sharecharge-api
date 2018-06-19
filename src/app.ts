@@ -20,7 +20,7 @@ sc.on('Error', result => {
     logger.error("Error", result);
 });
 
-const wallet = new Wallet('filter march urge naive sauce distance under copy payment slow just cool');
+const wallet = new Wallet(config.seed);
 
 app.use(bodyParser.json()); // support json bodies
 app.use(bodyParser.urlencoded({extended: true}));  //support encoded bodies
