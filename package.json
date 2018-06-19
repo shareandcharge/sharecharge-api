@@ -17,9 +17,9 @@
     "@motionwerk/sharecharge-lib": "0.4.17",
     "bcrypt": "^2.0.1",
     "inversify": "^4.13.0",
-    "joi": "^13.3.0",
-    "jsonwebtoken": "^8.2.2",
+    "joi": "^13.4.0",
+    "jsonwebtoken": "^8.3.0",
     "reflect-metadata": "^0.1.12",
-    "winston": "^2.4.2"
+    "winston": "^2.4.3"
   }
 }
