@@ -16,7 +16,14 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     router.post('/request/start', async (req, res) => {
         console.log(req.body);
         try {
-            await sc.charging.useWallet(wallet).requestStart(String(req.body.scId), String(req.body.evseId), sc.token.address, Number(req.body.price));
+            await sc.charging.useWallet(wallet).requestStart(
+                String(req.body.scId), 
+                String(req.body.evseId), 
+                Number(req.body.tariffId),
+                Number(req.body.tariffValue),
+                sc.token.address, 
+                Number(req.body.price)
+            );
             res.sendStatus(200);
         } catch (err) {
             res.status(500).send(err.message);
@@ -56,7 +63,12 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     // issue cdr
     router.post('/cdr', async(req, res) => {
         try {
-            await sc.charging.useWallet(wallet).chargeDetailRecord(String(req.body.scId), String(req.body.evseId), Number(req.body.price))
+            await sc.charging.useWallet(wallet).chargeDetailRecord(
+                String(req.body.scId), 
+                String(req.body.evseId), 
+                Number(req.body.tariffValue),
+                Number(req.body.price)
+            );
             res.sendStatus(200);
         } catch (err) {
             res.status(500).send(err.message);
