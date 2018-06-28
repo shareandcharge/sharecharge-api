@@ -20,7 +20,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     
     // get tariffs by CPO id
     router.get('/tariffs/:cpo', async (req, res) => {
-        const tariffs = await sc.store.getTariffsByCPO(req.params.cpo);
+        const tariffs = await sc.store.getAllTariffsByCPO(req.params.cpo);
         res.send(tariffs);
     });
     
