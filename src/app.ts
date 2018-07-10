@@ -9,6 +9,8 @@ import cdr from './routes/cdr';
 import store from './routes/store';
 import token from './routes/token';
 import auth from './routes/auth';
+import wallet_route from './routes/wallet';
+
 
 const logger = new LoggingProvider().obtain();
 const app = express();
@@ -32,6 +34,7 @@ app.use('/api/token', token(sc, wallet));
 app.use('/api/charging', charging(sc, wallet));
 app.use('/api/cdr', cdr(sc, wallet));
 app.use('/api/auth', auth);
+app.use('/api/wallet', wallet_route(wallet));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
