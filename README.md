@@ -58,10 +58,15 @@ Your config file under $HOME/.sharecharge should look something like this:
 
 #### I still don't see the token info json
 
-Try to use sharecharge-cli and see if it returns something like this
+Try to use sharecharge-cli
 
 ~~~~
-me@workcomputer:~/motionwerk/sharecharge-cli$ ts-node src/sc.ts wallet info
+sharecharge-cli$ ts-node src/sc.ts wallet info
+~~~~
+
+output:
+~~~~
+
 coinbase: 0x69ce47ce13d71c494f8bcec8afecb78158edd58a
 tx count: 16
 ~~~~
