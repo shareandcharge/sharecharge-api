@@ -34,7 +34,7 @@ app.use('/api/token', token(sc, wallet));
 app.use('/api/charging', charging(sc, wallet));
 app.use('/api/cdr', cdr(sc, wallet));
 app.use('/api/auth', auth);
-app.use('/api/wallet', wallet_route(wallet));
+app.use('/api/wallet', wallet_route(config, wallet));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
