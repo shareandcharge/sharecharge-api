@@ -20,8 +20,7 @@ export default (config, wallet: Wallet)=> {
     });
 
     router.get('/balance/:address', async (req, res) => {
-        const msp = await web3.fromWei(web3.eth.getBalance(req.params.address));
-        const balance = msp.c[0];
+        const balance = await web3.eth.getBalance(req.params.address);
         res.send({balance});
     });
 
