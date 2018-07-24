@@ -1,6 +1,7 @@
 import { ShareCharge, Wallet, ToolKit } from '@motionwerk/sharecharge-lib';
 import * as express from 'express';
 import authenticate from '../middleware/authenticate';
+import { async } from 'rxjs/internal/scheduler/async';
 
 const router = express.Router();
 
@@ -18,6 +19,22 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         res.send(location);
     });
 
+    // get location ids
+    router.get('/all-ids', async (req, res) => {
+        const allIds: any = [];
+        const cpo = wallet.keychain[0].address;
+        const ids = await sc.store.getLocationsByCPO(cpo);
+
+        try {
+            for (const id of ids) {
+                allIds.push(id.scId);
+            }
+            res.send(`All location ids: \n ${allIds}`);
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
+    });
+
     // get tariffs by CPO id
     router.get('/tariffs/:cpo', async (req, res) => {
         const tariffs = await sc.store.getAllTariffsByCPO(req.params.cpo);
@@ -29,6 +46,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         const owner = await sc.store.getOwnerOfLocation(req.params.scId);
         res.send(owner);
     });
+
 
     // add location
     router.post('/locations', async (req, res) => {
