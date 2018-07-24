@@ -34,13 +34,13 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     router.post('/locations', async (req, res) => {
         let locations = req.body;
 
-        for(const location of locations){
-        try {
+        for (const location of locations) {
+            try {
                 const result = await sc.store.useWallet(wallet).addLocation(location);
                 res.send(`Added locations:\n ${result.scId}`);
-        } catch (err) {
-            res.status(500).send(err.message);
-        }
+            } catch (err) {
+                res.status(500).send(err.message);
+            }
         }
     });
     
@@ -56,9 +56,11 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
     // add tariffs
     router.post('/tariffs', async (req, res) => {
+
+        console.log(req.body);
         try {
-            const result = await sc.store.useWallet(wallet).addTariffs(req.params);
-            res.send(result);
+            // const result = await sc.store.useWallet(wallet).addTariffs(req.body);
+            // res.send(result);
         } catch (err) {
             res.status(500).send(err.message);
         }
