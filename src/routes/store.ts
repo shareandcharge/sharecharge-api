@@ -62,6 +62,16 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
+    // remove location
+    router.delete('/locations/:id', async(req, res) => {
+        try {
+            const result = await sc.store.useWallet(wallet).removeLocation(req.params.id);
+            res.send(`Location with ${result.scId} is removed`);
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
+    });
+
     // update location
     router.put('/locations', async (req, res) => {
         let locations = req.body;
