@@ -32,11 +32,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     
     // add location
     router.post('/locations', async (req, res) => {
+        let locations = req.body;
+
+        for(const location of locations){
         try {
-            const result = await sc.store.useWallet(wallet).addLocation(req.params);
-            res.send(result);
+                const result = await sc.store.useWallet(wallet).addLocation(location);
+                res.send(`Added locations:\n ${result.scId}`);
         } catch (err) {
             res.status(500).send(err.message);
+        }
         }
     });
     
