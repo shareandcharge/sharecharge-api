@@ -2,8 +2,7 @@ import { ShareCharge, Wallet } from '@motionwerk/sharecharge-lib';
 import { config } from './config';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import "reflect-metadata";
-import LoggingProvider from "./services/loggingProvider";
+// import "reflect-metadata";
 import charging from './routes/charging';
 import cdr from './routes/cdr';
 import store from './routes/store';
@@ -12,14 +11,13 @@ import auth from './routes/auth';
 import wallet_route from './routes/wallet';
 
 
-const logger = new LoggingProvider().obtain();
 const app = express();
 
 const sc = ShareCharge.getInstance(config);
 sc.startListening();
 
 sc.on('Error', result => {
-    logger.error("Error", result);
+    console.log("Error", result);
 });
 
 const wallet = new Wallet(config.seed);
@@ -39,5 +37,5 @@ app.use('/api/wallet', wallet_route(config, wallet));
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     // process.send({ msg: "started", args: ""});
-    logger.info('API server running on http://localhost:' + port);
+    console.log('API server running on http://localhost:' + port);
 });
