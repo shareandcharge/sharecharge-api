@@ -95,11 +95,9 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
     // add tariffs
     router.post('/tariffs', async (req, res) => {
-
-        console.log(req.body);
         try {
-            // const result = await sc.store.useWallet(wallet).addTariffs(req.body);
-            // res.send(result);
+            const result = await sc.store.useWallet(wallet).addTariffs(req.body);
+            res.send(`Added tariffs data\nipfs: ${result}`);
         } catch (err) {
             res.status(500).send(err.message);
         }
@@ -108,7 +106,8 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     // update tariffs
     router.put('/tariffs', async (req, res) => {
         try {
-            const result = await sc.store.useWallet(wallet).updateTariffs(req.params);
+            const result = await sc.store.useWallet(wallet).updateTariffs(req.body);
+            res.send(`Updated tariffs data\nipfs: ${result}`);
         } catch (err) {
             res.status(500).send(err.message);
         }
