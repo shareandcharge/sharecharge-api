@@ -2,19 +2,11 @@
 # yarn lockfile v1
 
 
-"@motionwerk/sharecharge-common@^1.12.0":
-  version "1.15.2"
-  resolved "https://registry.yarnpkg.com/@motionwerk/sharecharge-common/-/sharecharge-common-1.15.2.tgz#ccb9ea89b0d6666851f798344c80257dc8adbca7"
+"@motionwerk/sharecharge-common@^1.15.0":
+  version "1.15.5"
+  resolved "https://registry.yarnpkg.com/@motionwerk/sharecharge-common/-/sharecharge-common-1.15.5.tgz#8ac514e1d28696b3429e2bcdbc92b5791835ff0e"
   dependencies:
     "@types/node" "10.1.4"
-    ganache-cli "^6.0.3"
-    rxjs "^6.2.0"
-    typescript "^2.9.1"
-
-"@motionwerk/sharecharge-common@^1.14.0":
-  version "1.15.4"
-  resolved "https://registry.yarnpkg.com/@motionwerk/sharecharge-common/-/sharecharge-common-1.15.4.tgz#6be90ac5f1cf32c0eac7e1c6cbff4606a1b750cd"
-  dependencies:
     ganache-cli "^6.0.3"
     rxjs "^6.2.0"
     uuid "^3.3.2"
@@ -27,10 +19,10 @@
     mkdirp "^0.5.1"
 
 "@motionwerk/sharecharge-lib@^0.8.0":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@motionwerk/sharecharge-lib/-/sharecharge-lib-0.8.1.tgz#7421d0378d42e7c96ba0cefb33238174f572aefa"
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/@motionwerk/sharecharge-lib/-/sharecharge-lib-0.8.4.tgz#b917b4516955e9e2aa0d96da6d764aa8fc9c6298"
   dependencies:
-    "@motionwerk/sharecharge-common" "^1.12.0"
+    "@motionwerk/sharecharge-common" "^1.15.0"
     "@motionwerk/sharecharge-contracts" "^0.5.0"
     bip39 "^2.5.0"
     bs58 "^4.0.1"
@@ -2405,10 +2397,6 @@ typedarray-to-buffer@^3.1.2:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
-
-typescript@^2.9.1:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
 
 ultron@~1.1.0:
   version "1.1.1"
