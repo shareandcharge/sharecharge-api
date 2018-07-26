@@ -4,12 +4,13 @@
   "description": "HTTP webserver for the Share&Charge e-Mobility Network",
   "main": "dist/app.js",
   "scripts": {
+    "postinstall": "([ -e dist/app.js ] && chmod +x ./dist/app.js) || echo 'No tsc output found. Ignoring.'",
     "start": "ts-node src/app.ts",
-    "install": "npm run build",
-    "build": "tsc && echo '#!/usr/bin/env node'| cat - ./dist/app.js > ./dist/app.node.js",
     "test": "echo 'no tests!'"
   },
-  "bin": "./dist/app.node.js",
+  "bin": {
+    "sc-api": "./dist/app.js"
+  },
   "author": "MotionWerk GmbH",
   "license": "ISC",
   "dependencies": {

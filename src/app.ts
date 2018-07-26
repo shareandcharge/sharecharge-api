@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { ShareCharge, Wallet } from '@motionwerk/sharecharge-lib';
 import { config } from './config';
 import * as express from 'express';
