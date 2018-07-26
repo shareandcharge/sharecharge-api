@@ -1,4 +1,4 @@
-import { ShareCharge, Wallet, ToolKit } from '@motionwerk/sharecharge-lib';
+import { ShareCharge, Wallet } from '@motionwerk/sharecharge-lib';
 import * as express from 'express';
 import authenticate from '../middleware/authenticate';
 
@@ -6,7 +6,7 @@ const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
-    router.get('/info', async (req, res) => {
+    router.get('/info', authenticate, async (req, res) => {
         const logs = await sc.charging.contract.getLogs('ChargeDetailRecord', req.query);
         const response = logs.map(obj => (
             {

@@ -1,4 +1,4 @@
-import { ShareCharge, Wallet, ToolKit } from '@motionwerk/sharecharge-lib';
+import { ShareCharge, Wallet } from '@motionwerk/sharecharge-lib';
 import * as express from 'express';
 import authenticate from '../middleware/authenticate';
 
@@ -6,7 +6,7 @@ const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
-    router.get('/info', async (req, res) => {
+    router.get('/info', authenticate, async (req, res) => {
         let response = {
             name: await sc.token.getName(),
             symbol: await sc.token.getSymbol(),
@@ -16,12 +16,12 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         res.send(response);
     });
 
-    router.get('/balance/:address', async (req, res) => {
+    router.get('/balance/:address', authenticate, async (req, res) => {
         const balance = await sc.token.getBalance(req.params.address);
         res.send(String(balance));
     });
 
-    router.post('/deploy', async (req, res) => {
+    router.post('/deploy', authenticate, async (req, res) => {
         try {
             const address = await sc.token.useWallet(wallet).deploy(String(req.body.name), String(req.body.symbol));
             await sc.token.useWallet(wallet).setAccess(sc.charging.address);
@@ -31,7 +31,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    router.post('/mint', async (req, res) => {
+    router.post('/mint', authenticate, async (req, res) => {
         const owner = await sc.token.getOwner();
         const driver = await wallet.keychain[0].address;
 

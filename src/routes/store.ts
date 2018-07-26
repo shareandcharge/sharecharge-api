@@ -1,26 +1,25 @@
-import { ShareCharge, Wallet, ToolKit } from '@motionwerk/sharecharge-lib';
+import { ShareCharge, Wallet } from '@motionwerk/sharecharge-lib';
 import * as express from 'express';
 import authenticate from '../middleware/authenticate';
-import { async } from 'rxjs/internal/scheduler/async';
 
 const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
     // get locations by CPO id
-    router.get('/locations/:cpo', async (req, res) => {
+    router.get('/locations/:cpo', authenticate, async (req, res) => {
         const locations = await sc.store.getLocationsByCPO(req.params.cpo);
         res.send(locations);
     });
 
     // get location by id
-    router.get('/locations/:cpo/:id', async (req, res) => {
+    router.get('/locations/:cpo/:id', authenticate, async (req, res) => {
         const location = await sc.store.getLocationById(req.params.cpo, req.params.id);
         res.send(location);
     });
 
     // get location ids
-    router.get('/all-ids', async (req, res) => {
+    router.get('/all-ids', authenticate, async (req, res) => {
         const allIds: any = [];
         const cpo = wallet.keychain[0].address;
         const ids = await sc.store.getLocationsByCPO(cpo);
@@ -36,20 +35,20 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     // get tariffs by CPO id
-    router.get('/tariffs/:cpo', async (req, res) => {
+    router.get('/tariffs/:cpo', authenticate, async (req, res) => {
         const tariffs = await sc.store.getAllTariffsByCPO(req.params.cpo);
         res.send(tariffs);
     });
 
     // get owner of the location
-    router.get('/owner/:scId', async (req, res) => {
+    router.get('/owner/:scId', authenticate, async (req, res) => {
         const owner = await sc.store.getOwnerOfLocation(req.params.scId);
         res.send(owner);
     });
 
 
     // add location
-    router.post('/locations', async (req, res) => {
+    router.post('/locations', authenticate, async (req, res) => {
         let locations = req.body;
 
         for (const location of locations) {
@@ -63,7 +62,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     // remove location
-    router.delete('/locations/:id', async(req, res) => {
+    router.delete('/locations/:id', authenticate, async(req, res) => {
         try {
             const result = await sc.store.useWallet(wallet).removeLocation(req.params.id);
             res.send(`Location with ${result.scId} is removed`);
@@ -73,7 +72,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     // update location
-    router.put('/locations', async (req, res) => {
+    router.put('/locations', authenticate, async (req, res) => {
         let locations = req.body;
         const evLocations = await sc.store.getLocationsByCPO(wallet.keychain[0].address);
 
@@ -94,7 +93,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     // add tariffs
-    router.post('/tariffs', async (req, res) => {
+    router.post('/tariffs', authenticate, async (req, res) => {
         try {
             const result = await sc.store.useWallet(wallet).addTariffs(req.body);
             res.send(`Added tariffs data\nipfs: ${result}`);
@@ -104,7 +103,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     // update tariffs
-    router.put('/tariffs', async (req, res) => {
+    router.put('/tariffs', authenticate, async (req, res) => {
         try {
             const result = await sc.store.useWallet(wallet).updateTariffs(req.body);
             res.send(`Updated tariffs data\nipfs: ${result}`);

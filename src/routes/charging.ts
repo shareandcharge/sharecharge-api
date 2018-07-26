@@ -1,19 +1,19 @@
 import { ShareCharge, Wallet } from '@motionwerk/sharecharge-lib';
-import authenticate from '../middleware/authenticate';
 import * as express from 'express';
+import authenticate from '../middleware/authenticate';
 
 const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
     // get session
-    router.get('/session/:scId/:evseId', async(req, res) => {
+    router.get('/session/:scId/:evseId', authenticate, async(req, res) => {
         const session = await sc.charging.getSession(req.params.scId, req.params.evseId);
         res.send(session);
     });
 
     // request start
-    router.post('/request/start', async (req, res) => {
+    router.post('/request/start', authenticate, async (req, res) => {
         console.log(req.body);
         try {
             await sc.charging.useWallet(wallet).requestStart(
@@ -31,7 +31,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     // confirm start
-    router.post('/confirm/start', async (req, res) => {
+    router.post('/confirm/start', authenticate, async (req, res) => {
         try {
             await sc.charging.useWallet(wallet).confirmStart(String(req.body.scId), String(req.body.evseId), "0x01");
             res.sendStatus(200);
@@ -41,7 +41,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     // request stop
-    router.post('/request/stop', async (req, res) => {
+    router.post('/request/stop', authenticate, async (req, res) => {
         try {
             await sc.charging.useWallet(wallet).requestStop(String(req.body.scId), String(req.body.evseId));
             res.sendStatus(200);
@@ -51,7 +51,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     // confirm stop
-    router.post('/confirm/stop', async (req, res) => {
+    router.post('/confirm/stop', authenticate, async (req, res) => {
         try {
             await sc.charging.useWallet(wallet).confirmStop(String(req.body.scId), String(req.body.evseId));
             res.sendStatus(200);
@@ -61,7 +61,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     // issue cdr
-    router.post('/cdr', async(req, res) => {
+    router.post('/cdr', authenticate, async(req, res) => {
         try {
             await sc.charging.useWallet(wallet).chargeDetailRecord(
                 String(req.body.scId), 
