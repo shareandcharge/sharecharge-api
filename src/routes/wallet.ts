@@ -51,21 +51,17 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
     });
 
     router.get('/history/:address', authenticate, async (req, res) => {
-        const events = {
-            charging: ['StartRequested', 'StopRequested'],
-            token: ['Transfer']
-        }
-        let history: any[] = [];
-        for (const event of events.charging) {
-            const logs = await sc.charging.contract.getLogs(event, { controller: req.params.address });
-            history = history.concat(logs);
-        }
-        for (const event of events.token) {
-            const logs = await sc.token.contract.getLogs(event, { from: req.params.address });
-            history = history.concat(logs);
-        }
-        history.sort((a, b) => b.timestamp - a.timestamp);
-        res.send(history);
+        let chargingEvents = await sc.charging.contract.getLogs('allEvents');
+        chargingEvents = chargingEvents.filter(event => {
+            return event.returnValues.controller.toLowerCase() === req.params.address.toLowerCase()
+        });
+        let tokenEvents: any[] = [];
+        const tokenOwner = await sc.token.getOwner();
+        if (tokenOwner.toLowerCase() === req.params.address.toLowerCase()) {
+            tokenEvents = await sc.token.contract.getLogs('Mint');
+        } 
+        const events = chargingEvents.concat(tokenEvents).sort((a, b) => b.timestamp - a.timestamp);
+        res.send(events);
     });
 
     return router;
