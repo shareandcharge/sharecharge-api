@@ -21,12 +21,12 @@ app.use(bodyParser.json()); // support json bodies
 app.use(bodyParser.urlencoded({extended: true}));  //support encoded bodies
 
 app.use('/health', (req, res) => res.send('OK'));
-    
+
 app.use('/api/store', store(sc, wallet));
 app.use('/api/token', token(sc, wallet));
 app.use('/api/charging', charging(sc, wallet));
 app.use('/api/cdr', cdr(sc, wallet));
-app.use('/api/wallet', wallet_route(config, wallet));
+app.use('/api/wallet', wallet_route(config, sc, wallet));
 
 export default (host: string, port: number) => app.listen(port, host, () => {
     // process.send({ msg: "started", args: ""});
