@@ -64,6 +64,47 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
+    /**
+     * @api {post} /api/token/burn/:value burn value of tokens from wallet
+     * @apiName burn
+     * @apiGroup token
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription burn tokens from wallet 
+     * @apiSampleRequest ../api/token/burn
+     * @apiSuccessExample Success-Response:
+     *      HTTP/1.1 200 OK
+    */
+    router.post('/burn/:value', authenticate, async (req, res) => {
+        try {
+            await sc.token.useWallet(wallet).burn(req.params.value);
+            res.send('OK');
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
+    });
+
+    /**
+     * @api {post} /api/token/transfer/:recipient/:value transfer value of tokens to recipient
+     * @apiName transfer
+     * @apiGroup token
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription transfer tokens to recipient address 
+     * @apiSampleRequest ../api/token/transfer
+     * @apiSuccessExample Success-Response:
+     *      HTTP/1.1 200 OK
+    */
+   router.post('/transfer/:recipient/:value', authenticate, async (req, res) => {
+        try {
+            await sc.token.useWallet(wallet).transfer(req.params.recipient, req.params.value);
+            res.send('OK');
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
+    });
+
+
     return router;
 }
 

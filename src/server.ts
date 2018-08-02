@@ -15,7 +15,7 @@ const app = express();
 const sc = ShareCharge.getInstance(config);
 
 const wallet = new Wallet(config.seed);
-
+        
 app.use(bodyParser.json()); // support json bodies
 app.use(bodyParser.urlencoded({extended: true}));  //support encoded bodies
 
