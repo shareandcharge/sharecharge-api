@@ -6,6 +6,23 @@ const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
+    /**
+     * @api {get} /api/token/info get token info
+     * @apiName info
+     * @apiGroup token
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription get token info 
+     * @apiSampleRequest ../api/token/info
+     * @apiSuccessExample Success-Response:
+     *      HTTP/1.1 200 OK
+     *      {
+     *          "name": "Share&Charge Token",
+     *          "symbol": "SCT",
+     *          "address": "0x407d3449819A6e47ce43687d58B3C00dCed77bc8",
+     *          "owner": "0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e"
+     *      }
+    */
     router.get('/info', authenticate, async (req, res) => {
         let response = {
             name: await sc.token.getName(),

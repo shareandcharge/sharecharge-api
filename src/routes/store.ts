@@ -6,7 +6,14 @@ const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
-    // get locations by CPO id
+    /**
+     * @api {get} /api/store/locations/:cpo get all locations by CPO
+     * @apiName locations/:cpo
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription get all locations by CPO
+    */    
     router.get('/locations/:cpo', authenticate, async (req, res) => {
         const locations = await sc.store.getLocationsByCPO(req.params.cpo);
         res.send(locations);

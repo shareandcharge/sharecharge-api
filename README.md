@@ -1,71 +1,76 @@
 # sharecharge-api
 HTTP webserver for the Share&amp;Charge e-Mobility Network
 
-## Usage
+## Install and setup
 
-~~~~
+#### Shell
+
+Package installation:
+```
+npm install -g @motionwerk/sharecharge-api
+```
+
+Run:
+```
+sc-api
+```
+
+The server will start, showing you the host and port it is listening on, as well as your authorization token.
+
+To test everything is working, run:
+```
+curl -H 'Authorization: Token <YOUR_AUTH_TOKEN>' http://localhost:3000/api/token/info
+```
+
+You should see the following:
+
+```
+{
+  "name": "Share&Charge Token",
+  "symbol": "SCT",
+  "address": "0x407d3449819A6e47ce43687d58B3C00dCed77bc8",
+  "owner": "0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e"
+}
+```
+
+The host and port are also configurable via environment variables:
+```
+PORT=3001 HOST=0.0.0.0 sc-api
+```
+
+#### Module Import
+
+The server is also available as a Node module:
+
+```ts
+import scApi from '@motionwerk/sharecharge-api';
+
+const host = '0.0.0.0';
+const port = 3001
+
+scApi(host, port);
+```
+
+
+## Development
+
+```
 git clone git@github.com:motionwerkGmbH/sharecharge-api.git
 cd sharecharge-api
 npm install
-npm run install
-npm run start
+npm start
+```
 
-> @motionwerk/sharecharge-api@0.3.2 start /home/me/motionwerk/sharecharge-api
-> ts-node src/app.ts
-2018-07-11T07:17:34.997Z - info: API server running on http://localhost:3000
+## Documentation
 
-~~~~
+**NOTE**: Work in Progress
 
-test if everything works with: <strong>http://localhost:3000/api/token/info</strong>
+After running the server you can visit `http://localhost:3000/api/docs` (by default) to view the API documentation. 
 
-you sould see:
+#### Building new documentation
 
-~~~~
-{
-    "name": "MSP Token",
-    "symbol": "MSP",
-    "address": "0xA4443565f8790E6fd4e88974b490630822A35c14",
-    "owner": "0x69ce47CE13d71c494f8bCec8afEcB78158Edd58a"
-}
-~~~~
+```
+tsc
+npm run documentation
+```
 
-
-## Troubleshooting:
-
-#### I'm not getting the json with the token info
-
-Your config file under $HOME/.sharecharge should look something like this:
-
-~~~~
-{
-  "tokenAddress":"0xA4443565f8790E6fd4e88974b490630822A35c14",
-  "locationsPath": "locations.json",
-  "tariffsPath": "tariffs.json",
-  "bridgePath": "@motionwerk/sharecharge-example-bridge",
-  "seed": "health salt town tiger vintage trend cart nation grace mechanic long dial",
-  "stage": "local",
-  "gasPrice": 1,
-  "ethProvider": "http://localhost:8545",
-  "ipfsProvider": {
-    "host": "ipfs.infura.io",
-    "port": "5001",
-    "protocol": "https"
-  }
-}
-~~~~
-
-2) You should have tobalaba running in the background, since the contract for the token is published on tobalaba
-
-#### I still don't see the token info json
-
-In the sharecharge-cli folder run
-
-~~~~
-$ts-node src/sc.ts wallet info
-~~~~
-
-output:
-~~~~
-coinbase: 0x69ce47ce13d71c494f8bcec8afecb78158edd58a
-tx count: 16
-~~~~

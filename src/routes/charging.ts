@@ -6,7 +6,14 @@ const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
-    // get session
+    /**
+     * @api {get} /api/charging/session get a session
+     * @apiName session
+     * @apiGroup charging
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription get a session
+    */
     router.get('/session/:scId/:evseId', authenticate, async(req, res) => {
         const session = await sc.charging.getSession(req.params.scId, req.params.evseId);
         res.send(session);

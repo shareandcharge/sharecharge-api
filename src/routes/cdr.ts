@@ -6,6 +6,15 @@ const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
+    /**
+     * @api {get} /api/cdrs/info/ gets Charge Detail Records (CDRs)
+     * @apiName info
+     * @apiGroup cdrs
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription gets Charge Detail Records (CDRs)
+     * @apiSampleRequest ../api/cdrs/info
+    */
     router.get('/info', authenticate, async (req, res) => {
         const logs = await sc.charging.contract.getLogs('ChargeDetailRecord', req.query);
         const response = logs.map(obj => (

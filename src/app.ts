@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import server from './server';
 
 const port = parseInt(process.env.PORT || '3000');
