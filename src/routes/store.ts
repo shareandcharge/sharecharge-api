@@ -41,10 +41,28 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    // get tariffs by CPO id
+
+    /**
+     * @api {get} /api/store/tariffs/:cpo get all tariffs by CPO
+     * @apiName tariffs/:cpo
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiParam {String} cpo The CPO ID of which the tariffs belong to
+     * 
+     * @apiDescription get all tariffs by CPO
+    */ 
     router.get('/tariffs/:cpo', authenticate, async (req, res) => {
-        const tariffs = await sc.store.getAllTariffsByCPO(req.params.cpo);
-        res.send(tariffs);
+        try {
+            if (req.query.raw === "true") {
+                const tariffs = await sc.store.getAllTariffsByCPO(req.params.cpo, false);
+                res.send(tariffs);
+            } else {
+                const tariffs = await sc.store.getAllTariffsByCPO(req.params.cpo);
+                res.send(tariffs);
+            }
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
     });
 
     // get owner of the location
