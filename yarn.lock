@@ -19,8 +19,8 @@
     mkdirp "^0.5.1"
 
 "@motionwerk/sharecharge-lib@^0.8.0":
-  version "0.8.8"
-  resolved "https://registry.yarnpkg.com/@motionwerk/sharecharge-lib/-/sharecharge-lib-0.8.8.tgz#de36ea656c1d20789737f60bf295a7556f70397e"
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/@motionwerk/sharecharge-lib/-/sharecharge-lib-0.8.9.tgz#f424b6e249faa853c6f75ae84aa6fad79eca37f5"
   dependencies:
     "@motionwerk/sharecharge-common" "^1.15.0"
     "@motionwerk/sharecharge-contracts" "^0.5.0"
@@ -71,8 +71,8 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.0.tgz#5a7306e367c539b9f6543499de8dd519fac37a8b"
 
 "@types/node@*":
-  version "10.5.6"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.6.tgz#1640f021dd0eaf12e731e54198c12ad2e020dc8e"
+  version "10.5.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.7.tgz#960d9feb3ade2233bcc9843c918d740b4f78a7cf"
 
 "@types/node@10.1.4":
   version "10.1.4"
@@ -523,8 +523,8 @@ combined-stream@1.0.6, combined-stream@~1.0.5:
     delayed-stream "~1.0.0"
 
 commander@^2.15.0, commander@^2.8.1:
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.0.tgz#9d07b25e2a6f198b76d8b756a0e8a9604a6a1a60"
+  version "2.17.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
 
 commander@~2.8.1:
   version "2.8.1"

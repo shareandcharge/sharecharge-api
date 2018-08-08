@@ -136,7 +136,23 @@ export default (sc: ShareCharge, wallet: Wallet) => {
             res.status(500).send(err.message);
         }
     });
-
+    
+    /**
+     * @api {delete} /api/store/tariffs delete all tariffs of CPO
+     * @apiName tariffs
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription delete all tariffs of CPO
+    */ 
+    router.delete('/tariffs', authenticate, async (req, res) => {
+        try {
+            const result = await sc.store.useWallet(wallet).removeTariffs();
+            res.send('Removed tariffs');
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
+    });
 
     return router;
 };
