@@ -71,49 +71,84 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         res.send(owner);
     });
 
-
-    // add location
-    router.post('/locations', authenticate, async (req, res) => {
-        let locations = req.body;
-
-        for (const location of locations) {
-            try {
-                const result = await sc.store.useWallet(wallet).addLocation(location);
-                res.send(`Added locations:\n ${result.scId}`);
-            } catch (err) {
-                res.status(500).send(err.message);
-            }
-        }
-    });
-
-    // remove location
-    router.delete('/locations/:id', authenticate, async(req, res) => {
+    router.post('/location', authenticate, async (req, res) => {
         try {
-            const result = await sc.store.useWallet(wallet).removeLocation(req.params.id);
-            res.send(`Location with ${result.scId} is removed`);
+            const loc = req.body;
+            // check req.body is valid (a little bit)
+            if (!loc.id || !loc.evses || !loc.coordinates) {
+                res.status(400).send('Location object not valid. Ensure location follows the OCPI model');
+            }
+            const result = await sc.store.useWallet(wallet).addLocation(loc);
+            res.send(result);
         } catch (err) {
             res.status(500).send(err.message);
         }
     });
 
-    // update location
-    router.put('/locations', authenticate, async (req, res) => {
+
+    // add locations
+    router.post('/locations', authenticate, async (req, res) => {
         let locations = req.body;
-        const evLocations = await sc.store.getLocationsByCPO(wallet.keychain[0].address);
-
-        for (const location of locations) {
+        const results = {};
+        for (const loc of locations) {
             try {
-                const evLocation = await evLocations.find(loc => {
-                    return loc.data ? loc.data.id === location.data.id : false;
-                });
-
-                if (evLocation) {
-                    const result = await sc.store.useWallet(wallet).updateLocation(evLocation.scId, location.data);
-                    res.send(`Updated location:\n ${result.scId}`);
+                if (!loc.id || !loc.evses || !loc.coordinates) {
+                    throw Error('Location object not valid. Ensure location follows the OCPI model');
                 }
+                const result = await sc.store.useWallet(wallet).addLocation(loc);
+                results[loc.id] = result;
             } catch (err) {
-                res.status(500).send(err.message);
+                results[loc.id] = {
+                    error: err.message
+                }
             }
+        }
+        res.send(results);
+    });
+
+
+    router.put('/location/:id', authenticate, async (req, res) => {
+        try {
+            const loc = req.body;
+            if (!loc.id || !loc.evses || !loc.coordinates) {
+                res.status(400).send('Location object not valid. Ensure location follows the OCPI model');
+            }
+            const result = await sc.store.useWallet(wallet).updateLocation(req.params.id, loc);
+            res.send(result);
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
+    });
+
+    // // update locations
+    // router.put('/locations', authenticate, async (req, res) => {
+    //     let locations = req.body;
+    //     const evLocations = await sc.store.getLocationsByCPO(wallet.keychain[0].address);
+
+    //     for (const location of locations) {
+    //         try {
+    //             const evLocation = await evLocations.find(loc => {
+    //                 return loc.data ? loc.data.id === location.data.id : false;
+    //             });
+
+    //             if (evLocation) {
+    //                 const result = await sc.store.useWallet(wallet).updateLocation(evLocation.scId, location.data);
+    //                 res.send(`Updated location:\n ${result.scId}`);
+    //             }
+    //         } catch (err) {
+    //             res.status(500).send(err.message);
+    //         }
+    //     }
+    // });
+
+
+    // remove location
+    router.delete('/location/:id', authenticate, async(req, res) => {
+        try {
+            const result = await sc.store.useWallet(wallet).removeLocation(req.params.id);
+            res.send(`Location with ${result.scId} is removed`);
+        } catch (err) {
+            res.status(500).send(err.message);
         }
     });
 
