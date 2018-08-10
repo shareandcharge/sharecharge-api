@@ -20,8 +20,8 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         const logs = await sc.charging.contract.getLogs('ChargeDetailRecord', req.query);
         const response = logs.map(obj => (
             {
-                scId: ToolKit.hexToScId(obj.returnValues.scId),
-                evseId: ToolKit.hexToString(obj.returnValues.evseId),
+                scId: obj.returnValues.scId,
+                evseId: obj.returnValues.evseId,
                 sessionId: obj.returnValues.sessionId,
                 controller: obj.returnValues.controller,
                 start: new Date(obj.returnValues.startTime * 1000).toUTCString(),
