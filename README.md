@@ -71,6 +71,6 @@ After running the server you can visit `http://localhost:3000/api/docs` (by defa
 
 ```
 tsc
-npm run documentation
+npm run document
 ```
 
