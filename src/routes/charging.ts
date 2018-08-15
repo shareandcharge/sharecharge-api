@@ -7,19 +7,30 @@ const router = express.Router();
 export default (sc: ShareCharge, wallet: Wallet) => {
 
     /**
-     * @api {get} /api/charging/session get a session
-     * @apiName session
+     * @api {get} /api/charging/session /session
+     * @apiName /session
      * @apiGroup charging
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value 
      * 
-     * @apiDescription get a session
+     * @apiDescription get a charging session at a particular scId and EVSE ID
+     * 
+     * @apiParam {String} scId A unique Share&Charge location identifier
+     * @apiParam {String} evseId An Electric Vehicle Supply Unit identifier
     */
     router.get('/session/:scId/:evseId', authenticate, async(req, res) => {
         const session = await sc.charging.getSession(req.params.scId, req.params.evseId);
         res.send(session);
     });
 
-    // request start
+    /**
+     * @api {get} /api/charging/request/start /request/start
+     * @apiName /request/start
+     * @apiGroup charging
+     * @apiHeader {String} Authorization Token value 
+     * 
+     * @apiDescription Request the start of a charging session
+     * 
+    */
     router.post('/request/start', authenticate, async (req, res) => {
         console.log(req.body);
         try {
@@ -37,7 +48,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    // confirm start
+    /**
+     * @api {get} /api/charging/confirm/start /confirm/start
+     * @apiName /confirm/start
+     * @apiGroup charging
+     * @apiHeader {String} Authorization Token value 
+     * 
+     * @apiDescription Confirm the start of a charging session
+     * 
+    */
     router.post('/confirm/start', authenticate, async (req, res) => {
         try {
             await sc.charging.useWallet(wallet).confirmStart(String(req.body.scId), String(req.body.evseId), "0x01");
@@ -47,7 +66,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    // request stop
+    /**
+     * @api {get} /api/charging/request/stop /request/stop
+     * @apiName /request/stop
+     * @apiGroup charging
+     * @apiHeader {String} Authorization Token value 
+     * 
+     * @apiDescription Request the stop of a charging session
+     * 
+    */
     router.post('/request/stop', authenticate, async (req, res) => {
         try {
             await sc.charging.useWallet(wallet).requestStop(String(req.body.scId), String(req.body.evseId));
@@ -57,7 +84,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    // confirm stop
+    /**
+     * @api {get} /api/charging/confirm/stop /confirm/stop
+     * @apiName /confirm/stop
+     * @apiGroup charging
+     * @apiHeader {String} Authorization Token value 
+     * 
+     * @apiDescription Confirm the stop of a charging session
+     * 
+    */
     router.post('/confirm/stop', authenticate, async (req, res) => {
         try {
             await sc.charging.useWallet(wallet).confirmStop(String(req.body.scId), String(req.body.evseId));
@@ -67,7 +102,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    // issue cdr
+    /**
+     * @api {get} /api/charging/cdr /cdr
+     * @apiName /cdr
+     * @apiGroup charging
+     * @apiHeader {String} Authorization Token value 
+     * 
+     * @apiDescription Confirm a Charge Detail Record (CDR) on the network
+     * 
+    */
     router.post('/cdr', authenticate, async(req, res) => {
         try {
             await sc.charging.useWallet(wallet).chargeDetailRecord(

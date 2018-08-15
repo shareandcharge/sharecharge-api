@@ -58,6 +58,31 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
         res.send({balance});
     });
 
+    /**
+     * @api {get} /api/wallet/info gets information about the currently set wallet
+     * @apiName getInfo 
+     * @apiGroup wallet
+     * @apiHeader {String} Authorization Authorization Token value
+     * 
+     * @apiDescription gets coinbase and transaction count for wallet
+     * @apiSampleRequest ../api/wallet/info
+     * 
+     * @apiSuccess {String} coinbase The (primary) public address of the wallet
+     * @apiSuccess {String} txCount The nonce of the coinbase
+     * @apiSuccessExample Success-Response:
+     *      HTTP/1.1 200 OK
+     *      {
+     *          "coinbase": "0x123..",
+     *          "txCount": 1
+     *      }
+     */
+    router.get('/info', authenticate, async (req, res) => {
+        res.send({
+            coinbase: wallet.coinbase,
+            txCount: await web3.eth.getTransactionCount(wallet.coinbase)
+        });
+    });
+
     return router;
 
 };

@@ -70,7 +70,6 @@ After running the server you can visit `http://localhost:3000/api/docs` (by defa
 #### Building new documentation
 
 ```
-tsc
-npm run document
+npm run doc && npm start
 ```
 

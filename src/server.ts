@@ -2,8 +2,7 @@ import { ShareCharge, Wallet } from '@motionwerk/sharecharge-lib';
 import { config } from './config';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import * as swaggerUi from 'swagger-ui-express';
-// import "reflect-metadata";
+import * as path from 'path';
 import charging from './routes/charging';
 import cdr from './routes/cdr';
 import store from './routes/store';
@@ -26,7 +25,8 @@ app.use('/api/token', token(sc, wallet));
 app.use('/api/charging', charging(sc, wallet));
 app.use('/api/cdr', cdr(sc, wallet));
 app.use('/api/wallet', wallet_route(config, sc, wallet));
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(require('../docs/swagger.json')));
+// app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(require('../docs/swagger.json')));
+app.use('/api/docs', express.static(path.join(__dirname, 'docs')));
 
 export default (host: string, port: number) => app.listen(port, host, () => {
     // process.send({ msg: "started", args: ""});

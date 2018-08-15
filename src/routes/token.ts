@@ -33,11 +33,27 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         res.send(response);
     });
 
+    /**
+     * @api {get} /api/token/balance/:address /balance/:address
+     * @apiName /balance/:address
+     * @apiGroup token
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription get token balance of a particular address 
+     */
     router.get('/balance/:address', authenticate, async (req, res) => {
         const balance = await sc.token.getBalance(req.params.address);
         res.send(String(balance));
     });
 
+    /**
+     * @api {post} /api/token/deploy /deploy
+     * @apiName /deploy
+     * @apiGroup token
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription deploy a new eMobility Service Provider token on the network 
+     */
     router.post('/deploy', authenticate, async (req, res) => {
         try {
             const address = await sc.token.useWallet(wallet).deploy(String(req.body.name), String(req.body.symbol));
@@ -48,6 +64,14 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
+    /**
+     * @api {post} /api/token/mint /mint
+     * @apiName /mint
+     * @apiGroup token
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription mint tokens for a driver address
+     */
     router.post('/mint', authenticate, async (req, res) => {
         const owner = await sc.token.getOwner();
         const driver = await wallet.keychain[0].address;
@@ -72,8 +96,6 @@ export default (sc: ShareCharge, wallet: Wallet) => {
      * 
      * @apiDescription burn tokens from wallet 
      * @apiSampleRequest ../api/token/burn
-     * @apiSuccessExample Success-Response:
-     *      HTTP/1.1 200 OK
     */
     router.post('/burn/:value', authenticate, async (req, res) => {
         try {
@@ -92,8 +114,6 @@ export default (sc: ShareCharge, wallet: Wallet) => {
      * 
      * @apiDescription transfer tokens to recipient address 
      * @apiSampleRequest ../api/token/transfer
-     * @apiSuccessExample Success-Response:
-     *      HTTP/1.1 200 OK
     */
    router.post('/transfer/:recipient/:value', authenticate, async (req, res) => {
         try {

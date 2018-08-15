@@ -7,19 +7,26 @@ const router = express.Router();
 export default (sc: ShareCharge, wallet: Wallet) => {
 
     /**
-     * @api {get} /api/store/locations/:cpo get all locations by CPO
-     * @apiName locations/:cpo
+     * @api {get} /api/store/locations/:cpo /locations/:cpo
+     * @apiName /locations/:cpo
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value  
      * 
-     * @apiDescription get all locations by CPO
+     * @apiDescription Get all locations owned by a CPO
     */    
     router.get('/locations/:cpo', authenticate, async (req, res) => {
         const locations = await sc.store.getLocationsByCPO(req.params.cpo);
         res.send(locations);
     });
 
-    // get location by id
+    /**
+     * @api {get} /api/store/locations/:cpo/:id /locations/:cpo/:id
+     * @apiName /locations/:cpo/:id
+     * @apiGroup store
+     * @apiHeader {String} Authorization Token value  
+     * 
+     * @apiDescription Get single location owned by a CPO
+    */  
     router.get('/locations/:cpo/:id', authenticate, async (req, res) => {
         try {
             const location = await sc.store.getLocationById(req.params.cpo, req.params.id);
@@ -29,8 +36,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    // get location ids
-    router.get('/all-ids', authenticate, async (req, res) => {
+    /**
+     * @api {get} /api/store/locations/all-ids /locations/all-ids
+     * @apiName /locations/all-ids
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription Get all location ids connected to the currently used wallet
+    */  
+    router.get('/locations/all-ids', authenticate, async (req, res) => {
         const allIds: any = [];
         const cpo = wallet.keychain[0].address;
         const ids = await sc.store.getLocationsByCPO(cpo);
@@ -47,13 +61,12 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
 
     /**
-     * @api {get} /api/store/tariffs/:cpo get all tariffs by CPO
-     * @apiName tariffs/:cpo
+     * @api {get} /api/store/tariffs/:cpo /tariffs/:cpo
+     * @apiName /tariffs/:cpo
      * @apiGroup store
      * @apiHeader {String} Authorization Authorization Token value  
-     * @apiParam {String} cpo The CPO ID of which the tariffs belong to
      * 
-     * @apiDescription get all tariffs by CPO
+     * @apiDescription Get all tariffs owned by a CPO
     */ 
     router.get('/tariffs/:cpo', authenticate, async (req, res) => {
         try {
@@ -69,12 +82,27 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    // get owner of the location
-    router.get('/owner/:scId', authenticate, async (req, res) => {
+    /**
+     * @api {get} /api/store/locations/owner/:scId /locations/owner/:scId
+     * @apiName /locations/owner/:scId
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription Get the address of the owner of a location by its Share&Charge ID
+    */ 
+    router.get('/locations/owner/:scId', authenticate, async (req, res) => {
         const owner = await sc.store.getOwnerOfLocation(req.params.scId);
         res.send(owner);
     });
 
+    /**
+     * @api {post} /api/store/location /location
+     * @apiName /location
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription Add a new location to the network
+    */ 
     router.post('/location', authenticate, async (req, res) => {
         try {
             const loc = req.body;
@@ -90,7 +118,14 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
 
-    // add locations
+    /**
+     * @api {post} /api/store/locations /locations
+     * @apiName /location
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription Add multiple new locations to the network
+    */ 
     router.post('/locations', authenticate, async (req, res) => {
         let locations = req.body;
         const results = {};
@@ -111,6 +146,14 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
 
+    /**
+     * @api {put} /api/store/location/:id /location/:id
+     * @apiName /location/:id
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription Update a location
+    */ 
     router.put('/location/:id', authenticate, async (req, res) => {
         try {
             const loc = req.body;
@@ -146,7 +189,14 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     // });
 
 
-    // remove location
+    /**
+     * @api {delete} /api/store/location/:id /location/:id
+     * @apiName /location/:id
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription Delete a location
+    */ 
     router.delete('/location/:id', authenticate, async(req, res) => {
         try {
             const result = await sc.store.useWallet(wallet).removeLocation(req.params.id);
@@ -156,7 +206,14 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    // add tariffs
+    /**
+     * @api {post} /api/store/tariffs /tariffs
+     * @apiName /tariffs
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription Add tariffs to the network
+    */ 
     router.post('/tariffs', authenticate, async (req, res) => {
         try {
             const result = await sc.store.useWallet(wallet).addTariffs(req.body);
@@ -166,7 +223,14 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         }
     });
 
-    // update tariffs
+    /**
+     * @api {put} /api/store/tariffs /tariffs
+     * @apiName /tariffs
+     * @apiGroup store
+     * @apiHeader {String} Authorization Authorization Token value  
+     * 
+     * @apiDescription Update all tariffs
+    */ 
     router.put('/tariffs', authenticate, async (req, res) => {
         try {
             const result = await sc.store.useWallet(wallet).updateTariffs(req.body);
@@ -177,8 +241,8 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
     
     /**
-     * @api {delete} /api/store/tariffs delete all tariffs of CPO
-     * @apiName tariffs
+     * @api {delete} /api/store/tariffs /tariffs
+     * @apiName /tariffs
      * @apiGroup store
      * @apiHeader {String} Authorization Authorization Token value  
      * 

@@ -8,13 +8,29 @@ const router = express.Router();
 export default (sc: ShareCharge, wallet: Wallet) => {
 
     /**
-     * @api {get} /api/cdrs/info/ gets Charge Detail Records (CDRs)
+     * @api {get} /api/cdr/info/ info
      * @apiName info
-     * @apiGroup cdrs
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiGroup cdr
+     * @apiHeader {String} Authorization Token value displayed on server start  
      * 
-     * @apiDescription gets Charge Detail Records (CDRs)
-     * @apiSampleRequest ../api/cdrs/info
+     * @apiDescription get and filter Charge Detail Records (CDRs)
+     * @apiSampleRequest http://localhost:3000/api/cdr/info
+     * @apiSuccessExample Success-Response:
+     *      HTTP/1.1 200 OK
+     *      [{
+     *         "scId": "0x35312e3433323936362c372e303033393436",
+     *         "evseId": "BB-5983-3",
+     *         "sessionId": "808296243576",
+     *         "controller": "0x50f43EE60da70E438ba1Ca74cC1C7d8fD9DDEE9a",
+     *         "start": "Wed, 01 Aug 2018 13:19:57 GMT",
+     *         "end": "Wed, 01 Aug 2018 13:20:22 GMT",
+     *         "finalPrice": "110",
+     *         "tariff": "flat",
+     *         "chargedUnits": "0",
+     *         "tokenContract": "0xbA07888d72C26ab0744f651824D9Dc774fb0445F",
+     *         "chargingContract": "0xde969C804Eb613653C35E6E39f39b5de78630c1a",
+     *         "transactionHash": "0x677d17daf85010e4c7107f081f80eb4b0ba49abc3b9978a8cdb60a3d30a74a45" 
+     *      }]
     */
     router.get('/info', authenticate, async (req, res) => {
         const logs = await sc.charging.contract.getLogs('ChargeDetailRecord', req.query);
