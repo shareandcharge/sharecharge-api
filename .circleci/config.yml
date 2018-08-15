@@ -86,6 +86,14 @@ jobs:
           name: tsc
           command: ./node_modules/.bin/tsc
 
+      - run:
+          name: produce docs
+          command: npm run doc
+
+      - run:
+          name: copy docs
+          command: cp -r ./src/docs ./dist
+
       - persist_to_workspace:
           root: ~/api
           paths: .
