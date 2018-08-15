@@ -21,8 +21,12 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
     // get location by id
     router.get('/locations/:cpo/:id', authenticate, async (req, res) => {
-        const location = await sc.store.getLocationById(req.params.cpo, req.params.id);
-        res.send(location);
+        try {
+            const location = await sc.store.getLocationById(req.params.cpo, req.params.id);
+            res.send(location);
+        } catch (err) {
+            res.status(400).send('Unable to find location with that ID');
+        }
     });
 
     // get location ids
