@@ -159,9 +159,10 @@ export default (sc: ShareCharge, wallet: Wallet) => {
             const loc = req.body;
             if (!loc.id || !loc.evses || !loc.coordinates) {
                 res.status(400).send('Location object not valid. Ensure location follows the OCPI model');
+            } else {
+                const result = await sc.store.useWallet(wallet).updateLocation(req.params.id, loc);
+                res.send(result);
             }
-            const result = await sc.store.useWallet(wallet).updateLocation(req.params.id, loc);
-            res.send(result);
         } catch (err) {
             res.status(500).send(err.message);
         }
