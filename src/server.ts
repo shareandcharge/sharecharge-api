@@ -32,8 +32,4 @@ export default (host: string, port: number) => app.listen(port, host, () => {
     // process.send({ msg: "started", args: ""});
     console.log(`API server running on http://${host}:${port}`);
     console.log(config.apiKey ? `API Key: ${config.apiKey}` : `Warning: No API Key found! Unauthorized access possible.`);
-    sc.startListening();
-    sc.on('Error', result => {
-        console.log("Error", result);
-    });
 });

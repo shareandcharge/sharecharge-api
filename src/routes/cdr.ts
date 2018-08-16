@@ -9,11 +9,14 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
     /**
      * @api {get} /api/cdr/info/ info
-     * @apiName info
+     * @apiDescription get and (optionally) filter Charge Detail Records (CDRs)
      * @apiGroup cdr
-     * @apiHeader {String} Authorization Token value displayed on server start  
+     * @apiHeader {string} Authorization Token value displayed on server start  
+     * @apiParamExample {json} Request-Example:
+     *      {
+     *          "controller": "0x50f43EE60da70E438ba1Ca74cC1C7d8fD9DDEE9a"
+     *      }
      * 
-     * @apiDescription get and filter Charge Detail Records (CDRs)
      * @apiSampleRequest http://localhost:3000/api/cdr/info
      * @apiSuccessExample Success-Response:
      *      HTTP/1.1 200 OK

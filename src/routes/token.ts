@@ -8,12 +8,11 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
     /**
      * @api {get} /api/token/info get token info
-     * @apiName info
      * @apiGroup token
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {string} Authorization Token value  
      * 
-     * @apiDescription get token info 
-     * @apiSampleRequest ../api/token/info
+     * @apiDescription get information about the currently used eMobility Service Provider token
+     * @apiSampleRequest http://localhost:3000/api/token/info
      * @apiSuccessExample Success-Response:
      *      HTTP/1.1 200 OK
      *      {
@@ -34,12 +33,13 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {get} /api/token/balance/:address /balance/:address
-     * @apiName /balance/:address
+     * @api {get} /api/token/balance/:address get token balance
      * @apiGroup token
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value  
+     * @apiDescription get token balance of a particular address
      * 
-     * @apiDescription get token balance of a particular address 
+     * @apiParam {string} address Address of the wallet to query
+     * @apiSampleRequest http://localhost:3000/api/token/balance/:address
      */
     router.get('/balance/:address', authenticate, async (req, res) => {
         const balance = await sc.token.getBalance(req.params.address);
@@ -47,12 +47,19 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {post} /api/token/deploy /deploy
-     * @apiName /deploy
+     * @api {post} /api/token/deploy deploy
      * @apiGroup token
-     * @apiHeader {String} Authorization Authorization Token value  
-     * 
+     * @apiHeader {String} Authorization Token value  
      * @apiDescription deploy a new eMobility Service Provider token on the network 
+     * 
+     * @apiParam {string} name The name of the new eMobility Service Provider token
+     * @apiParam {string} symbol The symbol of the new token
+     * @apiParamExample {json} Request-Example:
+     *      {
+     *          "name": "My New MSP Token",
+     *          "symbol": "MSPT"
+     *      }   
+     * 
      */
     router.post('/deploy', authenticate, async (req, res) => {
         try {
@@ -65,18 +72,24 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {post} /api/token/mint /mint
-     * @apiName /mint
+     * @api {post} /api/token/mint mint
      * @apiGroup token
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value  
+     * @apiDescription Mint tokens for a driver (NOTE: you must be the owner of the MSP token to mint) 
      * 
-     * @apiDescription mint tokens for a driver address
-     */
+     * @apiParam {string} driver The address of the driver to mint tokens for
+     * @apiParam {number} amount The value of tokens to mint for the driver
+     * @apiParamExample {json} Request-Example:
+     *      {
+     *          "driver": "0x1234567...",
+     *          "amount": 1000
+     *      }
+    */
     router.post('/mint', authenticate, async (req, res) => {
         const owner = await sc.token.getOwner();
-        const driver = await wallet.keychain[0].address;
+        const walletAddress = await wallet.keychain[0].address;
 
-        if (driver.toLowerCase() !== owner.toLowerCase()) {
+        if (walletAddress.toLowerCase() !== owner.toLowerCase()) {
             res.send("You do not have the permission to mint tokens for this contract");
         } else {
             try {
@@ -89,13 +102,16 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {post} /api/token/burn/:value burn value of tokens from wallet
-     * @apiName burn
+     * @api {post} /api/token/burn/:value burn
      * @apiGroup token
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value  
+     * @apiDescription burn tokens from currently used wallet 
      * 
-     * @apiDescription burn tokens from wallet 
-     * @apiSampleRequest ../api/token/burn
+     * @apiParam {string} value The amount of tokens to burn
+     * @apiParamExample {json} Request-Example:
+     *      {
+     *          "value": 1000
+     *      }
     */
     router.post('/burn/:value', authenticate, async (req, res) => {
         try {
@@ -107,13 +123,13 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {post} /api/token/transfer/:recipient/:value transfer value of tokens to recipient
-     * @apiName transfer
+     * @api {post} /api/token/transfer/:recipient/:value transfer
      * @apiGroup token
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value  
+     * @apiDescription Transfer tokens to recipient address 
      * 
-     * @apiDescription transfer tokens to recipient address 
-     * @apiSampleRequest ../api/token/transfer
+     * @apiParam {string} recipient The address of the wallet to send tokens to
+     * @apiParam {string} value The amount of tokens to send
     */
    router.post('/transfer/:recipient/:value', authenticate, async (req, res) => {
         try {

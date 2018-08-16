@@ -7,12 +7,13 @@ const router = express.Router();
 export default (sc: ShareCharge, wallet: Wallet) => {
 
     /**
-     * @api {get} /api/store/locations/:cpo /locations/:cpo
-     * @apiName /locations/:cpo
+     * @api {get} /api/store/locations/:cpo get all locations by CPO
      * @apiGroup store
-     * @apiHeader {String} Authorization Token value  
-     * 
+     * @apiHeader {string} Authorization Token value  
      * @apiDescription Get all locations owned by a CPO
+     * 
+     * @apiParam {string} cpo The address of the CPO to query for location details
+     * @apiSampleRequest http://localhost:3000/api/store/locations/:cpo
     */    
     router.get('/locations/:cpo', authenticate, async (req, res) => {
         const locations = await sc.store.getLocationsByCPO(req.params.cpo);
@@ -20,16 +21,17 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {get} /api/store/locations/:cpo/:id /locations/:cpo/:id
-     * @apiName /locations/:cpo/:id
+     * @api {get} /api/store/locations/:cpo/:scId get location by scId
      * @apiGroup store
-     * @apiHeader {String} Authorization Token value  
-     * 
+     * @apiHeader {string} Authorization Token value  
      * @apiDescription Get single location owned by a CPO
+     * 
+     * @apiParam {string} scId The unique identifier of the location to query
+     * @apiSampleRequest http://localhost:3000/api/store/locations/:cpo/:scId     
     */  
-    router.get('/locations/:cpo/:id', authenticate, async (req, res) => {
+    router.get('/locations/:cpo/:scId', authenticate, async (req, res) => {
         try {
-            const location = await sc.store.getLocationById(req.params.cpo, req.params.id);
+            const location = await sc.store.getLocationById(req.params.cpo, req.params.scId);
             res.send(location);
         } catch (err) {
             res.status(400).send('Unable to find location with that ID');
@@ -37,12 +39,12 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {get} /api/store/locations/all-ids /locations/all-ids
-     * @apiName /locations/all-ids
+     * @api {get} /api/store/locations/all-ids get location ids
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
-     * 
+     * @apiHeader {String} Authorization Token value  
      * @apiDescription Get all location ids connected to the currently used wallet
+     * 
+     * @apiSampleRequest http://localhost:3000/api/store/locations/all-ids     
     */  
     router.get('/locations/all-ids', authenticate, async (req, res) => {
         const allIds: any = [];
@@ -61,12 +63,13 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
 
     /**
-     * @api {get} /api/store/tariffs/:cpo /tariffs/:cpo
-     * @apiName /tariffs/:cpo
+     * @api {get} /api/store/tariffs/:cpo get tariffs by CPO
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
-     * 
+     * @apiHeader {string} Authorization Token value  
      * @apiDescription Get all tariffs owned by a CPO
+     * 
+     * @apiParam {string} cpo The address of the CPO to query tariffs from
+     * @apiSampleRequest http://localhost:3000/api/store/tariffs/:cpo     
     */ 
     router.get('/tariffs/:cpo', authenticate, async (req, res) => {
         try {
@@ -83,12 +86,13 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {get} /api/store/locations/owner/:scId /locations/owner/:scId
-     * @apiName /locations/owner/:scId
+     * @api {get} /api/store/locations/owner/:scId get owner of scId
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
-     * 
+     * @apiHeader {string} Authorization Token value  
      * @apiDescription Get the address of the owner of a location by its Share&Charge ID
+     * 
+     * @apiParam scId The unique location identifier of the location on the Share&Charge network
+     * @apiSampleRequest http://localhost:3000/api/store/locations/owner/:scId          
     */ 
     router.get('/locations/owner/:scId', authenticate, async (req, res) => {
         const owner = await sc.store.getOwnerOfLocation(req.params.scId);
@@ -96,12 +100,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {post} /api/store/location /location
-     * @apiName /location
+     * @api {post} /api/store/location add single location
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
-     * 
+     * @apiHeader {string} Authorization Token value  
      * @apiDescription Add a new location to the network
+     * 
+     * @apiParam {json} body [OCPI location object](https://github.com/ocpi/ocpi/blob/master/mod_locations.md#3-object-description)
+     * @apiParamExample {json} Request-Example
+     *      { <locationObject> }
+     *
     */ 
     router.post('/location', authenticate, async (req, res) => {
         try {
@@ -119,12 +126,18 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
 
     /**
-     * @api {post} /api/store/locations /locations
-     * @apiName /location
+     * @api {post} /api/store/locations add multiple locations
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value  
      * 
      * @apiDescription Add multiple new locations to the network
+     * 
+     * @apiParam {json} body Array of [OCPI location objects](https://github.com/ocpi/ocpi/blob/master/mod_locations.md#3-object-description)
+     * @apiParamExample {json} Request-Example:
+     * [
+     *  { <locationObject> },
+     *  { <locationObject> }
+     * ]
     */ 
     router.post('/locations', authenticate, async (req, res) => {
         let locations = req.body;
@@ -147,12 +160,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
 
     /**
-     * @api {put} /api/store/location/:id /location/:id
-     * @apiName /location/:id
+     * @api {put} /api/store/location/:id update single location
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value  
+     * @apiDescription Update a location with a particular scId
      * 
-     * @apiDescription Update a location
+     * @apiParam {json} body [OCPI location object](https://github.com/ocpi/ocpi/blob/master/mod_locations.md#3-object-description)
+     * @apiParamExample {json} Request-Example:
+     *      { <locationObject> }
+     *
     */ 
     router.put('/location/:id', authenticate, async (req, res) => {
         try {
@@ -191,16 +207,16 @@ export default (sc: ShareCharge, wallet: Wallet) => {
 
 
     /**
-     * @api {delete} /api/store/location/:id /location/:id
-     * @apiName /location/:id
+     * @api {delete} /api/store/location/:scId delete single location
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
-     * 
-     * @apiDescription Delete a location
+     * @apiHeader {String} Authorization Token value  
+     * @apiDescription Delete a location by its scId
+     *
+     * @apiParam {string} scId The unique identifier of the location on the Share&Charge network 
     */ 
-    router.delete('/location/:id', authenticate, async(req, res) => {
+    router.delete('/location/:scId', authenticate, async(req, res) => {
         try {
-            const result = await sc.store.useWallet(wallet).removeLocation(req.params.id);
+            const result = await sc.store.useWallet(wallet).removeLocation(req.params.scId);
             res.send(`Location with ${result.scId} is removed`);
         } catch (err) {
             res.status(500).send(err.message);
@@ -208,12 +224,18 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {post} /api/store/tariffs /tariffs
+     * @api {post} /api/store/tariffs add tariffs
      * @apiName /tariffs
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
-     * 
+     * @apiHeader {String} Authorization Token value  
      * @apiDescription Add tariffs to the network
+     * 
+     * @apiParam {json} body Array of [OCPI tariff objects](https://github.com/ocpi/ocpi/blob/master/mod_tariffs.md#3-object-description)
+     * @apiParamExample {json} Example-Request:
+     *      [
+     *          { <tariffObject> },
+     *          { <tariffObject> }
+     *      ]
     */ 
     router.post('/tariffs', authenticate, async (req, res) => {
         try {
@@ -225,12 +247,16 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {put} /api/store/tariffs /tariffs
-     * @apiName /tariffs
+     * @api {put} /api/store/tariffs update tariffs
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value  
      * 
-     * @apiDescription Update all tariffs
+     * @apiParam {json} body [OCPI tariff object](https://github.com/ocpi/ocpi/blob/master/mod_tariffs.md#3-object-description)
+     * @apiParamExample {json} Example-Request:
+     *      [
+     *          { <tariffObject> },
+     *          { <tariffObject> }
+     *      ]
     */ 
     router.put('/tariffs', authenticate, async (req, res) => {
         try {
@@ -242,11 +268,9 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
     
     /**
-     * @api {delete} /api/store/tariffs /tariffs
-     * @apiName /tariffs
+     * @api {delete} /api/store/tariffs delete tariffs
      * @apiGroup store
-     * @apiHeader {String} Authorization Authorization Token value  
-     * 
+     * @apiHeader {String} Authorization Token value  
      * @apiDescription delete all tariffs of CPO
     */ 
     router.delete('/tariffs', authenticate, async (req, res) => {

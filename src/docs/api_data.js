@@ -31,14 +31,14 @@ define({ "api": [
     "type": "get",
     "url": "/api/cdr/info/",
     "title": "info",
-    "name": "info",
+    "description": "<p>get and (optionally) filter Charge Detail Records (CDRs)</p>",
     "group": "cdr",
     "header": {
       "fields": {
         "Header": [
           {
             "group": "Header",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "Authorization",
             "description": "<p>Token value displayed on server start</p>"
@@ -46,7 +46,15 @@ define({ "api": [
         ]
       }
     },
-    "description": "<p>get and filter Charge Detail Records (CDRs)</p>",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n    \"controller\": \"0x50f43EE60da70E438ba1Ca74cC1C7d8fD9DDEE9a\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "sampleRequest": [
       {
         "url": "http://localhost:3000/api/cdr/info"
@@ -63,13 +71,13 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "src/routes/cdr.ts",
-    "groupTitle": "cdr"
+    "groupTitle": "cdr",
+    "name": "GetApiCdrInfo"
   },
   {
     "type": "get",
     "url": "/api/charging/cdr",
-    "title": "/cdr",
-    "name": "_cdr",
+    "title": "cdr",
     "group": "charging",
     "header": {
       "fields": {
@@ -85,15 +93,42 @@ define({ "api": [
       }
     },
     "description": "<p>Confirm a Charge Detail Record (CDR) on the network</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "tariffValue",
+            "description": "<p>The final units charged during the session (in watt hours if energy-based tariff or seconds if time/flat-based tariff)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>The final price of the charging session</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example-Request",
+          "content": "{\n    \"scId\": \"0x35312e3433323938342c372e303033393038\",\n    \"evseId\": \"BE-5084-4\",\n    \"tariffvalue\": 1800,\n    \"price\": 500\n}",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "src/routes/charging.ts",
-    "groupTitle": "charging"
+    "groupTitle": "charging",
+    "name": "GetApiChargingCdr"
   },
   {
     "type": "get",
     "url": "/api/charging/confirm/start",
-    "title": "/confirm/start",
-    "name": "_confirm_start",
+    "title": "confirm start",
     "group": "charging",
     "header": {
       "fields": {
@@ -109,15 +144,24 @@ define({ "api": [
       }
     },
     "description": "<p>Confirm the start of a charging session</p>",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Example-Request",
+          "content": "{\n    \"scId\": \"0x35312e3433323938342c372e303033393038\",\n    \"evseId\": \"BE-5084-4\",\n}",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "src/routes/charging.ts",
-    "groupTitle": "charging"
+    "groupTitle": "charging",
+    "name": "GetApiChargingConfirmStart"
   },
   {
     "type": "get",
     "url": "/api/charging/confirm/stop",
-    "title": "/confirm/stop",
-    "name": "_confirm_stop",
+    "title": "confirm stop",
     "group": "charging",
     "header": {
       "fields": {
@@ -133,15 +177,24 @@ define({ "api": [
       }
     },
     "description": "<p>Confirm the stop of a charging session</p>",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Example-Request",
+          "content": "{\n    \"scId\": \"0x35312e3433323938342c372e303033393038\",\n    \"evseId\": \"BE-5084-4\",\n}",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "src/routes/charging.ts",
-    "groupTitle": "charging"
+    "groupTitle": "charging",
+    "name": "GetApiChargingConfirmStop"
   },
   {
     "type": "get",
     "url": "/api/charging/request/start",
-    "title": "/request/start",
-    "name": "_request_start",
+    "title": "request start",
     "group": "charging",
     "header": {
       "fields": {
@@ -157,15 +210,49 @@ define({ "api": [
       }
     },
     "description": "<p>Request the start of a charging session</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "tariffId",
+            "description": "<p>The OCPI enum identifier for the type of tariff used to charge (0 = energy; 1 = flat; 3 = time)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "tariffValue",
+            "description": "<p>The number of units to charge for (in watt hours if energy-based tariff or seconds if time/flat-based tariff)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>The estimated price of the charging session</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example-Request",
+          "content": "{\n    \"scId\": \"0x35312e3433323938342c372e303033393038\",\n    \"evseId\": \"BE-5084-4\",\n    \"tariffId\": 1,\n    \"tariffValue\": 3600,\n    \"price\": 1000\n}",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "src/routes/charging.ts",
-    "groupTitle": "charging"
+    "groupTitle": "charging",
+    "name": "GetApiChargingRequestStart"
   },
   {
     "type": "get",
     "url": "/api/charging/request/stop",
-    "title": "/request/stop",
-    "name": "_request_stop",
+    "title": "request stop",
     "group": "charging",
     "header": {
       "fields": {
@@ -181,22 +268,31 @@ define({ "api": [
       }
     },
     "description": "<p>Request the stop of a charging session</p>",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Example-Request",
+          "content": "{\n    \"scId\": \"0x35312e3433323938342c372e303033393038\",\n    \"evseId\": \"BE-5084-4\",\n}",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "src/routes/charging.ts",
-    "groupTitle": "charging"
+    "groupTitle": "charging",
+    "name": "GetApiChargingRequestStop"
   },
   {
     "type": "get",
     "url": "/api/charging/session",
-    "title": "/session",
-    "name": "_session",
+    "title": "session",
     "group": "charging",
     "header": {
       "fields": {
         "Header": [
           {
             "group": "Header",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "Authorization",
             "description": "<p>Token value</p>"
@@ -204,7 +300,7 @@ define({ "api": [
         ]
       }
     },
-    "description": "<p>get a charging session at a particular scId and EVSE ID</p>",
+    "description": "<p>Get a charging session at a particular scId and EVSE ID</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -225,87 +321,29 @@ define({ "api": [
         ]
       }
     },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/charging/session/:scId/:evseId"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n           \"id\": \"27215646981\",\n           \"controller\": \"0x684e91B424F285043239F5b7c3937caDa2D6f45C\",\n           \"tariffId\": \"3\",\n           \"tariffValue\": \"3600\",\n           \"token\": \"0x682F10b5e35bA3157E644D9e7c7F3C107EB46305\",\n           \"price\": \"250\",\n           \"startTime\": \"1534412787\" \n}",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "src/routes/charging.ts",
-    "groupTitle": "charging"
-  },
-  {
-    "type": "post",
-    "url": "/api/store/locations",
-    "title": "/locations",
-    "name": "_location",
-    "group": "store",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
-          }
-        ]
-      }
-    },
-    "description": "<p>Add multiple new locations to the network</p>",
-    "version": "0.0.0",
-    "filename": "src/routes/store.ts",
-    "groupTitle": "store"
-  },
-  {
-    "type": "post",
-    "url": "/api/store/location",
-    "title": "/location",
-    "name": "_location",
-    "group": "store",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
-          }
-        ]
-      }
-    },
-    "description": "<p>Add a new location to the network</p>",
-    "version": "0.0.0",
-    "filename": "src/routes/store.ts",
-    "groupTitle": "store"
-  },
-  {
-    "type": "put",
-    "url": "/api/store/location/:id",
-    "title": "/location/:id",
-    "name": "_location__id",
-    "group": "store",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
-          }
-        ]
-      }
-    },
-    "description": "<p>Update a location</p>",
-    "version": "0.0.0",
-    "filename": "src/routes/store.ts",
-    "groupTitle": "store"
+    "groupTitle": "charging",
+    "name": "GetApiChargingSession"
   },
   {
     "type": "delete",
-    "url": "/api/store/location/:id",
-    "title": "/location/:id",
-    "name": "_location__id",
+    "url": "/api/store/location/:scId",
+    "title": "delete single location",
     "group": "store",
     "header": {
       "fields": {
@@ -315,28 +353,94 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "description": "<p>Token value</p>"
           }
         ]
       }
     },
-    "description": "<p>Delete a location</p>",
+    "description": "<p>Delete a location by its scId</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "scId",
+            "description": "<p>The unique identifier of the location on the Share&amp;Charge network</p>"
+          }
+        ]
+      }
+    },
     "version": "0.0.0",
     "filename": "src/routes/store.ts",
-    "groupTitle": "store"
+    "groupTitle": "store",
+    "name": "DeleteApiStoreLocationScid"
+  },
+  {
+    "type": "delete",
+    "url": "/api/store/tariffs",
+    "title": "delete tariffs",
+    "group": "store",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>delete all tariffs of CPO</p>",
+    "version": "0.0.0",
+    "filename": "src/routes/store.ts",
+    "groupTitle": "store",
+    "name": "DeleteApiStoreTariffs"
+  },
+  {
+    "type": "get",
+    "url": "/api/store/locations/all-ids",
+    "title": "get location ids",
+    "group": "store",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>Get all location ids connected to the currently used wallet</p>",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/store/locations/all-ids"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/routes/store.ts",
+    "groupTitle": "store",
+    "name": "GetApiStoreLocationsAllIds"
   },
   {
     "type": "get",
     "url": "/api/store/locations/:cpo",
-    "title": "/locations/:cpo",
-    "name": "_locations__cpo",
+    "title": "get all locations by CPO",
     "group": "store",
     "header": {
       "fields": {
         "Header": [
           {
             "group": "Header",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "Authorization",
             "description": "<p>Token value</p>"
@@ -345,15 +449,202 @@ define({ "api": [
       }
     },
     "description": "<p>Get all locations owned by a CPO</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "cpo",
+            "description": "<p>The address of the CPO to query for location details</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/store/locations/:cpo"
+      }
+    ],
     "version": "0.0.0",
     "filename": "src/routes/store.ts",
-    "groupTitle": "store"
+    "groupTitle": "store",
+    "name": "GetApiStoreLocationsCpo"
   },
   {
     "type": "get",
-    "url": "/api/store/locations/:cpo/:id",
-    "title": "/locations/:cpo/:id",
-    "name": "_locations__cpo__id",
+    "url": "/api/store/locations/:cpo/:scId",
+    "title": "get location by scId",
+    "group": "store",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>Get single location owned by a CPO</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "scId",
+            "description": "<p>The unique identifier of the location to query</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/store/locations/:cpo/:scId"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/routes/store.ts",
+    "groupTitle": "store",
+    "name": "GetApiStoreLocationsCpoScid"
+  },
+  {
+    "type": "get",
+    "url": "/api/store/locations/owner/:scId",
+    "title": "get owner of scId",
+    "group": "store",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>Get the address of the owner of a location by its Share&amp;Charge ID</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "scId",
+            "description": "<p>The unique location identifier of the location on the Share&amp;Charge network</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/store/locations/owner/:scId"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/routes/store.ts",
+    "groupTitle": "store",
+    "name": "GetApiStoreLocationsOwnerScid"
+  },
+  {
+    "type": "get",
+    "url": "/api/store/tariffs/:cpo",
+    "title": "get tariffs by CPO",
+    "group": "store",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>Get all tariffs owned by a CPO</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "cpo",
+            "description": "<p>The address of the CPO to query tariffs from</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/store/tariffs/:cpo"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/routes/store.ts",
+    "groupTitle": "store",
+    "name": "GetApiStoreTariffsCpo"
+  },
+  {
+    "type": "post",
+    "url": "/api/store/location",
+    "title": "add single location",
+    "group": "store",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>Add a new location to the network</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "json",
+            "optional": false,
+            "field": "body",
+            "description": "<p><a href=\"https://github.com/ocpi/ocpi/blob/master/mod_locations.md#3-object-description\">OCPI location object</a></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{ <locationObject> }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/routes/store.ts",
+    "groupTitle": "store",
+    "name": "PostApiStoreLocation"
+  },
+  {
+    "type": "post",
+    "url": "/api/store/locations",
+    "title": "add multiple locations",
     "group": "store",
     "header": {
       "fields": {
@@ -368,16 +659,36 @@ define({ "api": [
         ]
       }
     },
-    "description": "<p>Get single location owned by a CPO</p>",
+    "description": "<p>Add multiple new locations to the network</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "json",
+            "optional": false,
+            "field": "body",
+            "description": "<p>Array of <a href=\"https://github.com/ocpi/ocpi/blob/master/mod_locations.md#3-object-description\">OCPI location objects</a></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "[\n { <locationObject> },\n { <locationObject> }\n]",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "src/routes/store.ts",
-    "groupTitle": "store"
+    "groupTitle": "store",
+    "name": "PostApiStoreLocations"
   },
   {
-    "type": "get",
-    "url": "/api/store/locations/all-ids",
-    "title": "/locations/all-ids",
-    "name": "_locations_all_ids",
+    "type": "put",
+    "url": "/api/store/location/:id",
+    "title": "update single location",
     "group": "store",
     "header": {
       "fields": {
@@ -387,45 +698,41 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "description": "<p>Token value</p>"
           }
         ]
       }
     },
-    "description": "<p>Get all location ids connected to the currently used wallet</p>",
-    "version": "0.0.0",
-    "filename": "src/routes/store.ts",
-    "groupTitle": "store"
-  },
-  {
-    "type": "get",
-    "url": "/api/store/locations/owner/:scId",
-    "title": "/locations/owner/:scId",
-    "name": "_locations_owner__scId",
-    "group": "store",
-    "header": {
+    "description": "<p>Update a location with a particular scId</p>",
+    "parameter": {
       "fields": {
-        "Header": [
+        "Parameter": [
           {
-            "group": "Header",
-            "type": "String",
+            "group": "Parameter",
+            "type": "json",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "field": "body",
+            "description": "<p><a href=\"https://github.com/ocpi/ocpi/blob/master/mod_locations.md#3-object-description\">OCPI location object</a></p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{ <locationObject> }",
+          "type": "json"
+        }
+      ]
     },
-    "description": "<p>Get the address of the owner of a location by its Share&amp;Charge ID</p>",
     "version": "0.0.0",
     "filename": "src/routes/store.ts",
-    "groupTitle": "store"
+    "groupTitle": "store",
+    "name": "PutApiStoreLocationId"
   },
   {
-    "type": "delete",
+    "type": "put",
     "url": "/api/store/tariffs",
-    "title": "/tariffs",
-    "name": "_tariffs",
+    "title": "update tariffs",
     "group": "store",
     "header": {
       "fields": {
@@ -435,20 +742,40 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "description": "<p>Token value</p>"
           }
         ]
       }
     },
-    "description": "<p>delete all tariffs of CPO</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "json",
+            "optional": false,
+            "field": "body",
+            "description": "<p><a href=\"https://github.com/ocpi/ocpi/blob/master/mod_tariffs.md#3-object-description\">OCPI tariff object</a></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example-Request:",
+          "content": "[\n    { <tariffObject> },\n    { <tariffObject> }\n]",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "src/routes/store.ts",
-    "groupTitle": "store"
+    "groupTitle": "store",
+    "name": "PutApiStoreTariffs"
   },
   {
     "type": "post",
     "url": "/api/store/tariffs",
-    "title": "/tariffs",
+    "title": "add tariffs",
     "name": "_tariffs",
     "group": "store",
     "header": {
@@ -459,60 +786,32 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "description": "<p>Token value</p>"
           }
         ]
       }
     },
     "description": "<p>Add tariffs to the network</p>",
-    "version": "0.0.0",
-    "filename": "src/routes/store.ts",
-    "groupTitle": "store"
-  },
-  {
-    "type": "put",
-    "url": "/api/store/tariffs",
-    "title": "/tariffs",
-    "name": "_tariffs",
-    "group": "store",
-    "header": {
+    "parameter": {
       "fields": {
-        "Header": [
+        "Parameter": [
           {
-            "group": "Header",
-            "type": "String",
+            "group": "Parameter",
+            "type": "json",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "field": "body",
+            "description": "<p>Array of <a href=\"https://github.com/ocpi/ocpi/blob/master/mod_tariffs.md#3-object-description\">OCPI tariff objects</a></p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Example-Request:",
+          "content": "[\n    { <tariffObject> },\n    { <tariffObject> }\n]",
+          "type": "json"
+        }
+      ]
     },
-    "description": "<p>Update all tariffs</p>",
-    "version": "0.0.0",
-    "filename": "src/routes/store.ts",
-    "groupTitle": "store"
-  },
-  {
-    "type": "get",
-    "url": "/api/store/tariffs/:cpo",
-    "title": "/tariffs/:cpo",
-    "name": "_tariffs__cpo",
-    "group": "store",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
-          }
-        ]
-      }
-    },
-    "description": "<p>Get all tariffs owned by a CPO</p>",
     "version": "0.0.0",
     "filename": "src/routes/store.ts",
     "groupTitle": "store"
@@ -520,8 +819,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/token/balance/:address",
-    "title": "/balance/:address",
-    "name": "_balance__address",
+    "title": "get token balance",
     "group": "token",
     "header": {
       "fields": {
@@ -531,116 +829,57 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "description": "<p>Token value</p>"
           }
         ]
       }
     },
     "description": "<p>get token balance of a particular address</p>",
-    "version": "0.0.0",
-    "filename": "src/routes/token.ts",
-    "groupTitle": "token"
-  },
-  {
-    "type": "post",
-    "url": "/api/token/deploy",
-    "title": "/deploy",
-    "name": "_deploy",
-    "group": "token",
-    "header": {
+    "parameter": {
       "fields": {
-        "Header": [
+        "Parameter": [
           {
-            "group": "Header",
-            "type": "String",
+            "group": "Parameter",
+            "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "field": "address",
+            "description": "<p>Address of the wallet to query</p>"
           }
         ]
       }
     },
-    "description": "<p>deploy a new eMobility Service Provider token on the network</p>",
-    "version": "0.0.0",
-    "filename": "src/routes/token.ts",
-    "groupTitle": "token"
-  },
-  {
-    "type": "post",
-    "url": "/api/token/mint",
-    "title": "/mint",
-    "name": "_mint",
-    "group": "token",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
-          }
-        ]
-      }
-    },
-    "description": "<p>mint tokens for a driver address</p>",
-    "version": "0.0.0",
-    "filename": "src/routes/token.ts",
-    "groupTitle": "token"
-  },
-  {
-    "type": "post",
-    "url": "/api/token/burn/:value",
-    "title": "burn value of tokens from wallet",
-    "name": "burn",
-    "group": "token",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
-          }
-        ]
-      }
-    },
-    "description": "<p>burn tokens from wallet</p>",
     "sampleRequest": [
       {
-        "url": "../api/token/burn"
+        "url": "http://localhost:3000/api/token/balance/:address"
       }
     ],
     "version": "0.0.0",
     "filename": "src/routes/token.ts",
-    "groupTitle": "token"
+    "groupTitle": "token",
+    "name": "GetApiTokenBalanceAddress"
   },
   {
     "type": "get",
     "url": "/api/token/info",
     "title": "get token info",
-    "name": "info",
     "group": "token",
     "header": {
       "fields": {
         "Header": [
           {
             "group": "Header",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "description": "<p>Token value</p>"
           }
         ]
       }
     },
-    "description": "<p>get token info</p>",
+    "description": "<p>get information about the currently used eMobility Service Provider token</p>",
     "sampleRequest": [
       {
-        "url": "../api/token/info"
+        "url": "http://localhost:3000/api/token/info"
       }
     ],
     "success": {
@@ -654,13 +893,13 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "src/routes/token.ts",
-    "groupTitle": "token"
+    "groupTitle": "token",
+    "name": "GetApiTokenInfo"
   },
   {
     "type": "post",
-    "url": "/api/token/transfer/:recipient/:value",
-    "title": "transfer value of tokens to recipient",
-    "name": "transfer",
+    "url": "/api/token/burn/:value",
+    "title": "burn",
     "group": "token",
     "header": {
       "fields": {
@@ -670,26 +909,187 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "description": "<p>Token value</p>"
           }
         ]
       }
     },
-    "description": "<p>transfer tokens to recipient address</p>",
-    "sampleRequest": [
-      {
-        "url": "../api/token/transfer"
-      }
-    ],
+    "description": "<p>burn tokens from currently used wallet</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "value",
+            "description": "<p>The amount of tokens to burn</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n    \"value\": 1000\n}",
+          "type": "json"
+        }
+      ]
+    },
     "version": "0.0.0",
     "filename": "src/routes/token.ts",
-    "groupTitle": "token"
+    "groupTitle": "token",
+    "name": "PostApiTokenBurnValue"
+  },
+  {
+    "type": "post",
+    "url": "/api/token/deploy",
+    "title": "deploy",
+    "group": "token",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>deploy a new eMobility Service Provider token on the network</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the new eMobility Service Provider token</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "symbol",
+            "description": "<p>The symbol of the new token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n    \"name\": \"My New MSP Token\",\n    \"symbol\": \"MSPT\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/routes/token.ts",
+    "groupTitle": "token",
+    "name": "PostApiTokenDeploy"
+  },
+  {
+    "type": "post",
+    "url": "/api/token/mint",
+    "title": "mint",
+    "group": "token",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>Mint tokens for a driver (NOTE: you must be the owner of the MSP token to mint)</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "driver",
+            "description": "<p>The address of the driver to mint tokens for</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>The value of tokens to mint for the driver</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n    \"driver\": \"0x1234567...\",\n    \"amount\": 1000\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/routes/token.ts",
+    "groupTitle": "token",
+    "name": "PostApiTokenMint"
+  },
+  {
+    "type": "post",
+    "url": "/api/token/transfer/:recipient/:value",
+    "title": "transfer",
+    "group": "token",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>Transfer tokens to recipient address</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "recipient",
+            "description": "<p>The address of the wallet to send tokens to</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "value",
+            "description": "<p>The amount of tokens to send</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/routes/token.ts",
+    "groupTitle": "token",
+    "name": "PostApiTokenTransferRecipientValue"
   },
   {
     "type": "get",
-    "url": "/api/wallet/create",
-    "title": "create a new wallet",
-    "name": "createWallet",
+    "url": "/api/wallet/balance/:address",
+    "title": "get balance",
     "group": "wallet",
     "header": {
       "fields": {
@@ -699,15 +1099,66 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "description": "<p>Token value</p>"
           }
         ]
       }
     },
-    "description": "<p>create a wallet</p>",
+    "description": "<p>Gets EV Coin balance of a wallet</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>The address of the wallet to query</p>"
+          }
+        ]
+      }
+    },
     "sampleRequest": [
       {
-        "url": "../api/wallet/create"
+        "url": "http://localhost:3000/api/wallet/balance/:address"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"balance\": \"42\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/routes/wallet.ts",
+    "groupTitle": "wallet",
+    "name": "GetApiWalletBalanceAddress"
+  },
+  {
+    "type": "get",
+    "url": "/api/wallet/create",
+    "title": "create",
+    "group": "wallet",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token value</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>generate a new wallet</p>",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/wallet/create"
       }
     ],
     "success": {
@@ -721,64 +1172,13 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "src/routes/wallet.ts",
-    "groupTitle": "wallet"
-  },
-  {
-    "type": "get",
-    "url": "/api/wallet/balance/:address",
-    "title": "gets balance",
-    "name": "getBalance",
-    "group": "wallet",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
-          }
-        ]
-      }
-    },
-    "description": "<p>gets balance of a wallet</p>",
-    "sampleRequest": [
-      {
-        "url": "../api/wallet/balance/:address"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "address",
-            "description": "<p>the address of a wallet</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n    \"balance\": \"42\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "src/routes/wallet.ts",
-    "groupTitle": "wallet"
+    "groupTitle": "wallet",
+    "name": "GetApiWalletCreate"
   },
   {
     "type": "get",
     "url": "/api/wallet/info",
-    "title": "gets information about the currently set wallet",
-    "name": "getInfo",
+    "title": "get info",
     "group": "wallet",
     "header": {
       "fields": {
@@ -788,7 +1188,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Authorization Token value</p>"
+            "description": "<p>Token value</p>"
           }
         ]
       }
@@ -796,7 +1196,7 @@ define({ "api": [
     "description": "<p>gets coinbase and transaction count for wallet</p>",
     "sampleRequest": [
       {
-        "url": "../api/wallet/info"
+        "url": "http://localhost:3000/api/wallet/info"
       }
     ],
     "success": {
@@ -828,6 +1228,7 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "src/routes/wallet.ts",
-    "groupTitle": "wallet"
+    "groupTitle": "wallet",
+    "name": "GetApiWalletInfo"
   }
 ] });

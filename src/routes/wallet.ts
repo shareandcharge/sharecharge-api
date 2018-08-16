@@ -13,13 +13,12 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
     web3.setProvider(new web3.providers.HttpProvider(config.ethProvider));
 
     /**
-     * @api {get} /api/wallet/create create a new wallet
-     * @apiName createWallet
+     * @api {get} /api/wallet/create create
      * @apiGroup wallet
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {string} Authorization Token value  
      * 
-     * @apiDescription create a wallet 
-     * @apiSampleRequest ../api/wallet/create
+     * @apiDescription generate a new wallet 
+     * @apiSampleRequest http://localhost:3000/api/wallet/create
      * @apiSuccessExample Success-Response:
      *      HTTP/1.1 200 OK
      *      {
@@ -39,14 +38,13 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
 
 
     /**
-     * @api {get} /api/wallet/balance/:address gets balance
-     * @apiName getBalance
+     * @api {get} /api/wallet/balance/:address get balance
      * @apiGroup wallet
-     * @apiHeader {String} Authorization Authorization Token value  
+     * @apiHeader {String} Authorization Token value  
      * 
-     * @apiDescription gets balance of a wallet 
-     * @apiSampleRequest ../api/wallet/balance/:address
-     * @apiParam {String} address the address of a wallet
+     * @apiDescription Gets EV Coin balance of a wallet 
+     * @apiParam {String} address The address of the wallet to query
+     * @apiSampleRequest http://localhost:3000/api/wallet/balance/:address
      * @apiSuccessExample Success-Response:
      *      HTTP/1.1 200 OK
      *      {
@@ -59,13 +57,12 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {get} /api/wallet/info gets information about the currently set wallet
-     * @apiName getInfo 
+     * @api {get} /api/wallet/info get info
      * @apiGroup wallet
-     * @apiHeader {String} Authorization Authorization Token value
+     * @apiHeader {String} Authorization Token value
      * 
      * @apiDescription gets coinbase and transaction count for wallet
-     * @apiSampleRequest ../api/wallet/info
+     * @apiSampleRequest http://localhost:3000/api/wallet/info
      * 
      * @apiSuccess {String} coinbase The (primary) public address of the wallet
      * @apiSuccess {String} txCount The nonce of the coinbase
