@@ -86,15 +86,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {get} /api/store/locations/owner/:scId get owner of scId
+     * @api {get} /api/store/get-owner/:scId get owner of scId
      * @apiGroup store
      * @apiHeader {string} Authorization Token value  
      * @apiDescription Get the address of the owner of a location by its Share&Charge ID
      * 
      * @apiParam scId The unique location identifier of the location on the Share&Charge network
-     * @apiSampleRequest http://localhost:3000/api/store/locations/owner/:scId          
+     * @apiSampleRequest http://localhost:3000/api/store/get-owner/:scId          
     */ 
-    router.get('/locations/owner/:scId', authenticate, async (req, res) => {
+    router.get('/get-owner/:scId', authenticate, async (req, res) => {
         const owner = await sc.store.getOwnerOfLocation(req.params.scId);
         res.send(owner);
     });
