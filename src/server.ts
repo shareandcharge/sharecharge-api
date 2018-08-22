@@ -9,6 +9,8 @@ import store from './routes/store';
 import token from './routes/token';
 import wallet_route from './routes/wallet';
 
+const pkg = require('../package.json');
+
 const app = express();
 
 const sc = ShareCharge.getInstance(config);
@@ -30,6 +32,6 @@ app.use('/api/docs', express.static(path.join(__dirname, 'docs')));
 
 export default (host: string, port: number) => app.listen(port, host, () => {
     // process.send({ msg: "started", args: ""});
-    console.log(`API server running on http://${host}:${port}`);
+    console.log(`API v${pkg.version} running on http://${host}:${port}`);
     console.log(config.apiKey ? `API Key: ${config.apiKey}` : `Warning: No API Key found! Unauthorized access possible.`);
 });
