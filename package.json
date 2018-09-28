@@ -15,12 +15,12 @@
   "author": "MotionWerk GmbH",
   "license": "ISC",
   "dependencies": {
-    "@motionwerk/sharecharge-common": "^1.15.0",
-    "@motionwerk/sharecharge-lib": "^0.8.0"
+    "@motionwerk/sharecharge-common": "^1.16.0",
+    "@motionwerk/sharecharge-lib": "^0.9.0"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
     "apidoc": "^0.17.6",
-    "typescript": "^3.0.0"
+    "typescript": "^3.1.0"
   }
 }
