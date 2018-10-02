@@ -112,12 +112,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     */ 
     router.post('/location', authenticate, async (req, res) => {
         try {
-            const loc = req.body;
-            // check req.body is valid (a little bit)
-            if (!loc.id || !loc.evses || !loc.coordinates) {
-                res.status(400).send('Location object not valid. Ensure location follows the OCPI model');
-            }
-            const result = await sc.store.useWallet(wallet).addLocation(loc);
+            const result = await sc.store.useWallet(wallet).addLocation(req.body);
             res.send(result);
         } catch (err) {
             res.status(500).send(err.message);
@@ -144,9 +139,6 @@ export default (sc: ShareCharge, wallet: Wallet) => {
         const results = {};
         for (const loc of locations) {
             try {
-                if (!loc.id || !loc.evses || !loc.coordinates) {
-                    throw Error('Location object not valid. Ensure location follows the OCPI model');
-                }
                 const result = await sc.store.useWallet(wallet).addLocation(loc);
                 results[loc.id] = result;
             } catch (err) {
