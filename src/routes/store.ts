@@ -49,13 +49,10 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     router.get('/locations/all-ids', authenticate, async (req, res) => {
         const allIds: any = [];
         const cpo = wallet.keychain[0].address;
-        const ids = await sc.store.getLocationsByCPO(cpo);
+        const ids = await sc.store.getIdsByCPO(cpo);
 
         try {
-            for (const id of ids) {
-                allIds.push(id.scId);
-            }
-            res.send(`All location ids: \n ${allIds}`);
+            res.send(ids);
         } catch (err) {
             res.status(500).send(err.message);
         }
@@ -74,7 +71,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     router.get('/tariffs/:cpo', authenticate, async (req, res) => {
         try {
             if (req.query.raw === "true") {
-                const tariffs = await sc.store.getAllTariffsByCPO(req.params.cpo, false);
+                const tariffs = await sc.store.getAllTariffsByCPO(req.params.cpo);
                 res.send(tariffs);
             } else {
                 const tariffs = await sc.store.getAllTariffsByCPO(req.params.cpo);
