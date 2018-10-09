@@ -1,7 +1,12 @@
 import { ShareCharge, Wallet, ToolKit } from '@motionwerk/sharecharge-lib';
-import { Tariffs } from '@motionwerk/sharecharge-common';
 import * as express from 'express';
 import authenticate from '../middleware/authenticate';
+
+enum Tariffs {
+    'ENERGY' = 0,
+    'FLAT' = 1,
+    'TIME' = 3
+}
 
 const router = express.Router();
 
@@ -46,7 +51,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
                 start: new Date(obj.returnValues.startTime * 1000).toUTCString(),
                 end: new Date(obj.returnValues.endTime * 1000).toUTCString(),
                 finalPrice: obj.returnValues.finalPrice,
-                tariff:Tariffs[obj.returnValues.tariffId],
+                tariff: Tariffs[obj.returnValues.tariffId],
                 chargedUnits: obj.returnValues.finalTariffValue,
                 tokenContract: obj.returnValues.tokenAddress,
                 chargingContract: obj.address,
