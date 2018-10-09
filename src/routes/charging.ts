@@ -56,14 +56,14 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     router.post('/request/start', authenticate, async (req, res) => {
         console.log(req.body);
         try {
-            await sc.charging.useWallet(wallet).requestStart(
-                String(req.body.scId), 
-                String(req.body.evseId), 
-                Number(req.body.tariffId),
-                Number(req.body.tariffValue),
-                sc.token.address, 
-                Number(req.body.price)
-            );
+            const tx = sc.charging.useWallet(wallet).requestStart();
+            tx.scId = req.body.scId;
+            tx.evse = req.body.evseId;
+            tx.tariff = req.body.tariffType;
+            tx.chargeUnits = req.body.chargeUnits;
+            tx.tokenAddress = sc.token.address; 
+            tx.estimatedPrice = req.body.price;
+            await tx.send();
             res.sendStatus(200);
         } catch (err) {
             res.status(500).send(err.message);
@@ -85,7 +85,11 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     */
     router.post('/confirm/start', authenticate, async (req, res) => {
         try {
-            await sc.charging.useWallet(wallet).confirmStart(String(req.body.scId), String(req.body.evseId), "0x01");
+            const tx = sc.charging.useWallet(wallet).confirmStart();
+            tx.scId = req.body.scId;
+            tx.evse = req.body.evseId;
+            tx.sessionId = req.body.sessionId;
+            await tx.send();
             res.sendStatus(200);
         } catch (err) {
             res.status(500).send(err.message);
@@ -107,7 +111,10 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     */
     router.post('/request/stop', authenticate, async (req, res) => {
         try {
-            await sc.charging.useWallet(wallet).requestStop(String(req.body.scId), String(req.body.evseId));
+            const tx = sc.charging.useWallet(wallet).requestStop();
+            tx.scId = req.body.scId;
+            tx.evse = req.body.evseId;
+            await tx.send();
             res.sendStatus(200);
         } catch (err) {
             res.status(500).send(err.message);
@@ -129,7 +136,10 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     */
     router.post('/confirm/stop', authenticate, async (req, res) => {
         try {
-            await sc.charging.useWallet(wallet).confirmStop(String(req.body.scId), String(req.body.evseId));
+            const tx = sc.charging.useWallet(wallet).confirmStop();
+            tx.scId = req.body.scId;
+            tx.evse = req.body.evseId;
+            await tx.send();
             res.sendStatus(200);
         } catch (err) {
             res.status(500).send(err.message);
@@ -155,12 +165,12 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     */
     router.post('/cdr', authenticate, async(req, res) => {
         try {
-            await sc.charging.useWallet(wallet).chargeDetailRecord(
-                String(req.body.scId), 
-                String(req.body.evseId), 
-                Number(req.body.tariffValue),
-                Number(req.body.price)
-            );
+            const tx = sc.charging.useWallet(wallet).chargeDetailRecord();
+            tx.scId = req.body.scId;
+            tx.evse = req.body.evseId;
+            tx.chargedUnits = req.body.chargedUnits;
+            tx.finalPrice = req.body.price;
+            await tx.send();
             res.sendStatus(200);
         } catch (err) {
             res.status(500).send(err.message);
