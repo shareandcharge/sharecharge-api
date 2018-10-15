@@ -67,47 +67,6 @@ npm start
 
 After running the server you can visit `http://localhost:3000/api/docs` (by default) to view the API documentation. 
 
-### Locations CRUD
-
-####  For adding new locations (when there aren't any present use)
-
-POST on ....
-
-with body .....
-
-#### Updating a location
-
-####  For adding new locations (when there aren't any present use)
-
-POST on ....
-
-with body .....
-
-#### Deleting a location
-
-### Tariffs CRUD
-
-####  For adding new tariffs (when there aren't any present use)
-
-POST on ....
-
-with body .....
-
-#### Updating tariffs
-
-PUT on ....
-
-with body .....
-
-#### Deleting tariffs
-
-DELETE on....
-
-
-
-
-
-
 #### Building new documentation
 
 ```
