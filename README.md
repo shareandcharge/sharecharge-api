@@ -24,7 +24,7 @@ curl -H 'Authorization: Token <YOUR_AUTH_TOKEN>' http://localhost:3000/api/token
 
 You should see the following:
 
-```
+```json
 {
   "name": "Share&Charge Token",
   "symbol": "SCT",
