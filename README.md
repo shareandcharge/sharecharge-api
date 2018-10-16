@@ -51,6 +51,12 @@ const port = 3001
 scApi(host, port);
 ```
 
+## Documentation
+
+After running the server you can visit `http://localhost:3000/api/docs` (by default) to view the API documentation. 
+
+API documentation is generated using [apiDoc](http://apidocjs.com/).
+
 
 ## Development
 
@@ -60,12 +66,6 @@ cd sharecharge-api
 npm install
 npm start
 ```
-
-## Documentation
-
-**NOTE**: Work in Progress
-
-After running the server you can visit `http://localhost:3000/api/docs` (by default) to view the API documentation. 
 
 #### Building new documentation
 
