@@ -7,12 +7,11 @@ const router = express.Router();
 export default (sc: ShareCharge, wallet: Wallet) => {
 
     /**
-     * @api {get} /api/token/info get token info
+     * @api {get} /token/info get token info
      * @apiGroup token
      * @apiHeader {string} Authorization Token value  
      * 
      * @apiDescription get information about the currently used eMobility Service Provider token
-     * @apiSampleRequest http://localhost:3000/api/token/info
      * @apiSuccessExample Success-Response:
      *      HTTP/1.1 200 OK
      *      {
@@ -23,6 +22,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
      *      }
     */
     router.get('/info', authenticate, async (req, res) => {
+        console.log('GET /token/info');
         let response = {
             name: await sc.token.getName(),
             symbol: await sc.token.getSymbol(),
@@ -33,15 +33,15 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {get} /api/token/balance/:address get token balance
+     * @api {get} /token/balance/:address get token balance
      * @apiGroup token
      * @apiHeader {String} Authorization Token value  
      * @apiDescription get token balance of a particular address
      * 
      * @apiParam {string} address Address of the wallet to query
-     * @apiSampleRequest http://localhost:3000/api/token/balance/:address
      */
     router.get('/balance/:address', authenticate, async (req, res) => {
+        console.log(`GET /token/balance/${req.params.address}`);
         const balance = await sc.token.getBalance(req.params.address);
         res.send(String(balance));
     });
@@ -62,6 +62,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
      * 
      */
     router.post('/deploy', authenticate, async (req, res) => {
+        console.log('POST /token/deploy');
         try {
             const address = await sc.token.useWallet(wallet).deploy(String(req.body.name), String(req.body.symbol));
             await sc.token.useWallet(wallet).setAccess(sc.charging.address);
@@ -72,7 +73,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {post} /api/token/mint mint
+     * @api {post} /token/mint mint
      * @apiGroup token
      * @apiHeader {String} Authorization Token value  
      * @apiDescription Mint tokens for a driver (NOTE: you must be the owner of the MSP token to mint) 
@@ -86,6 +87,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
      *      }
     */
     router.post('/mint', authenticate, async (req, res) => {
+        console.log('POST /token/mint');
         const owner = await sc.token.getOwner();
         const walletAddress = await wallet.keychain[0].address;
 
@@ -102,7 +104,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {post} /api/token/burn/:value burn
+     * @api {post} /token/burn/:value burn
      * @apiGroup token
      * @apiHeader {String} Authorization Token value  
      * @apiDescription burn tokens from currently used wallet 
@@ -114,6 +116,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
      *      }
     */
     router.post('/burn/:value', authenticate, async (req, res) => {
+        console.log(`POST /token/burn/${req.params.value}`);
         try {
             await sc.token.useWallet(wallet).burn(req.params.value);
             res.send('OK');
@@ -123,7 +126,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
     });
 
     /**
-     * @api {post} /api/token/transfer/:recipient/:value transfer
+     * @api {post} /token/transfer/:recipient/:value transfer
      * @apiGroup token
      * @apiHeader {String} Authorization Token value  
      * @apiDescription Transfer tokens to recipient address 
@@ -132,6 +135,7 @@ export default (sc: ShareCharge, wallet: Wallet) => {
      * @apiParam {string} value The amount of tokens to send
     */
    router.post('/transfer/:recipient/:value', authenticate, async (req, res) => {
+       console.log(`POST /token/transfer/${req.params.recipient}/${req.params.value}`);
         try {
             await sc.token.useWallet(wallet).transfer(req.params.recipient, req.params.value);
             res.send('OK');

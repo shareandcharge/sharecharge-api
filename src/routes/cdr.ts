@@ -1,46 +1,41 @@
-import { ShareCharge, Wallet, ToolKit } from '@motionwerk/sharecharge-lib';
+import { ShareCharge, Wallet } from '@motionwerk/sharecharge-lib';
+import { TariffEnum as Tariffs } from '@motionwerk/sharecharge-common';
 import * as express from 'express';
 import authenticate from '../middleware/authenticate';
-
-enum Tariffs {
-    'ENERGY' = 0,
-    'FLAT' = 1,
-    'TIME' = 3
-}
 
 const router = express.Router();
 
 export default (sc: ShareCharge, wallet: Wallet) => {
 
     /**
-     * @api {get} /api/cdr/info/ info
+     * @api {get} /cdr/info/ info
      * @apiDescription get and (optionally) filter Charge Detail Records (CDRs)
      * @apiGroup cdr
      * @apiHeader {string} Authorization Token value displayed on server start  
      * @apiParamExample {json} Request-Example:
      *      {
-     *          "controller": "0x50f43EE60da70E438ba1Ca74cC1C7d8fD9DDEE9a"
+     *          "controller": "0x2f7D42e9f5112A2999c968A45C26aec13C5acb06"
      *      }
      * 
-     * @apiSampleRequest http://localhost:3000/api/cdr/info
      * @apiSuccessExample Success-Response:
      *      HTTP/1.1 200 OK
      *      [{
-     *         "scId": "0x35312e3433323936362c372e303033393436",
-     *         "evseId": "BB-5983-3",
-     *         "sessionId": "808296243576",
-     *         "controller": "0x50f43EE60da70E438ba1Ca74cC1C7d8fD9DDEE9a",
-     *         "start": "Wed, 01 Aug 2018 13:19:57 GMT",
-     *         "end": "Wed, 01 Aug 2018 13:20:22 GMT",
-     *         "finalPrice": "110",
-     *         "tariff": "flat",
-     *         "chargedUnits": "0",
-     *         "tokenContract": "0xbA07888d72C26ab0744f651824D9Dc774fb0445F",
-     *         "chargingContract": "0xde969C804Eb613653C35E6E39f39b5de78630c1a",
-     *         "transactionHash": "0x677d17daf85010e4c7107f081f80eb4b0ba49abc3b9978a8cdb60a3d30a74a45" 
-     *      }]
+                "scId": "0x2d33312e3933373331382c3131352e373535373939",
+                "evseId": "BB-5983-3",
+                "sessionId": "02482808578",
+                "controller": "0x2f7D42e9f5112A2999c968A45C26aec13C5acb06",
+                "start": "Mon, 15 Oct 2018 14:08:01 GMT",
+                "end": "Mon, 15 Oct 2018 14:13:11 GMT",
+                "finalPrice": "255",
+                "tariff": "ENERGY",
+                "chargedUnits": "7200",
+                "tokenContract": "0x928c1DE0429822e2F543Df7E195790bD2fCD42dd",
+                "chargingContract": "0x675E8e701AC2F249eC17F104dC287Fffc39BE26b",
+                "transactionHash": "0x89ccec2e215b440308f883a29badc7f6d85218d99f2909c33c24e7e8f032f70c"
+            }]
     */
     router.get('/info', authenticate, async (req, res) => {
+        console.log('GET /cdr/info');
         const logs = await sc.charging.contract.getLogs('ChargeDetailRecord', req.query);
         const response = logs.map(obj => (
             {
@@ -51,8 +46,8 @@ export default (sc: ShareCharge, wallet: Wallet) => {
                 start: new Date(obj.returnValues.startTime * 1000).toUTCString(),
                 end: new Date(obj.returnValues.endTime * 1000).toUTCString(),
                 finalPrice: obj.returnValues.finalPrice,
-                tariff: Tariffs[obj.returnValues.tariffId],
-                chargedUnits: obj.returnValues.finalTariffValue,
+                tariff: Tariffs[obj.returnValues.tariffType],
+                chargedUnits: obj.returnValues.chargedUnits,
                 tokenContract: obj.returnValues.tokenAddress,
                 chargingContract: obj.address,
                 transactionHash: obj.transactionHash,

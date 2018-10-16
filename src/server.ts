@@ -32,6 +32,6 @@ app.use('/api/docs', express.static(path.join(__dirname, 'docs')));
 
 export default (host: string, port: number) => app.listen(port, host, () => {
     // process.send({ msg: "started", args: ""});
-    console.log(`API v${pkg.version} running on http://${host}:${port}`);
+    console.log(`API v${pkg.version} running on http://${host}:${port}/api`);
     console.log(config.apiKey ? `API Key: ${config.apiKey}` : `Warning: No API Key found! Unauthorized access possible.`);
 });

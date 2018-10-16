@@ -1,7 +1,7 @@
 import {Wallet, ShareCharge } from '@motionwerk/sharecharge-lib';
 import * as express from 'express';
 import authenticate from '../middleware/authenticate';
-import { IConfig } from '@motionwerk/sharecharge-common/dist/common';
+import { IConfig } from '@motionwerk/sharecharge-common';
 
 const Web3 = require('web3');
 
@@ -13,12 +13,11 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
     web3.setProvider(new web3.providers.HttpProvider(config.ethProvider));
 
     /**
-     * @api {get} /api/wallet/create create
+     * @api {get} /wallet/create create
      * @apiGroup wallet
      * @apiHeader {string} Authorization Token value  
      * 
      * @apiDescription generate a new wallet 
-     * @apiSampleRequest http://localhost:3000/api/wallet/create
      * @apiSuccessExample Success-Response:
      *      HTTP/1.1 200 OK
      *      {
@@ -27,9 +26,8 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
      *      }
     */
     router.get('/create', authenticate, async (req, res) => {
+        console.log('GET /wallet/create')
         const wallet = Wallet.generate();
-        console.log('Wallet created');
-        
         const seed = wallet.seed;
         const address = wallet.wallet.keychain[0].address;
 
@@ -38,13 +36,12 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
 
 
     /**
-     * @api {get} /api/wallet/balance/:address get balance
+     * @api {get} /wallet/balance/:address get balance
      * @apiGroup wallet
      * @apiHeader {String} Authorization Token value  
      * 
      * @apiDescription Gets EV Coin balance of a wallet 
      * @apiParam {String} address The address of the wallet to query
-     * @apiSampleRequest http://localhost:3000/api/wallet/balance/:address
      * @apiSuccessExample Success-Response:
      *      HTTP/1.1 200 OK
      *      {
@@ -52,17 +49,17 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
      *      }
     */
     router.get('/balance/:address', authenticate, async (req, res) => {
+        console.log(`GET /wallet/balance/${req.params.address}`);
         const balance = await web3.eth.getBalance(req.params.address);
         res.send({balance});
     });
 
     /**
-     * @api {get} /api/wallet/info get info
+     * @api {get} /wallet/info get info
      * @apiGroup wallet
      * @apiHeader {String} Authorization Token value
      * 
      * @apiDescription gets coinbase and transaction count for wallet
-     * @apiSampleRequest http://localhost:3000/api/wallet/info
      * 
      * @apiSuccess {String} coinbase The (primary) public address of the wallet
      * @apiSuccess {String} txCount The nonce of the coinbase
@@ -74,6 +71,7 @@ export default (config: IConfig, sc: ShareCharge, wallet: Wallet) => {
      *      }
      */
     router.get('/info', authenticate, async (req, res) => {
+        console.log('GET /wallet/info')
         res.send({
             coinbase: wallet.coinbase,
             txCount: await web3.eth.getTransactionCount(wallet.coinbase)
